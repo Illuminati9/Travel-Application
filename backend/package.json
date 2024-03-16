@@ -16,6 +16,8 @@
     "@aws-sdk/client-s3": "^3.515.0",
     "@aws-sdk/lib-storage": "^3.515.0",
     "@aws-sdk/s3-request-presigner": "^3.515.0",
+    "@prisma/client": "^5.11.0",
+    "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.40.0",
@@ -34,10 +36,13 @@
     "nodemailer": "^6.9.4",
     "nodemon": "^3.1.0",
     "otp-generator": "^4.0.1",
+    "prisma": "^5.11.0",
     "razorpay": "^2.9.2",
-    "swagger-jsdoc": "^6.2.8"
+    "swagger-jsdoc": "^6.2.8",
+    "twilio": "^5.0.1"
   },
   "devDependencies": {
+    "fast-two-sms": "^3.0.0",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.0"
   }
