@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const swaggerUI = require('swagger-ui-express');
+const helmet = require('helmet')
 
 const userRoutes = require('./routes/auth');
 const profileRoutes = require('./routes/profile');
@@ -18,6 +19,7 @@ require('dotenv').config({ path: '.env' })
 const port = process.env.PORT || 5000;
 
 app.use(cors());
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
