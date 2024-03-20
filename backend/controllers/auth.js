@@ -23,7 +23,7 @@ const generateOTP = async () => {
 
 exports.sendOTP = async (req, res) => {
   try {
-    const { email, phoneNumber } = req.body;
+    const { email } = req.body;
 
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (!emailPattern.test(email)) {
@@ -45,7 +45,7 @@ exports.sendOTP = async (req, res) => {
     const otp = await generateOTP();
     console.log("OTP generated:", otp);
 
-    const otpPayload = { email, phoneNumber,otp };
+    const otpPayload = { email, otp };
 
     const otpBody = await OTP.create(otpPayload);
     console.log(otpBody);
@@ -97,6 +97,7 @@ exports.signUp = async (req, res) => {
         message: "Please Provide a valid Email Address.",
       });
     }
+
 
     if (password !== confirmPassword) {
       return res.status(400).json({
@@ -184,6 +185,8 @@ exports.signUp = async (req, res) => {
     });
   }
 };
+
+
 
 exports.login = async (req, res) => {
   try {

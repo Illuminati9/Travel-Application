@@ -43,3 +43,5 @@ const ownerDetailsSchema = new mongoose.Schema({
         trim: true
     },
 });
+
+module.exports = mongoose.model('OwnerDetails', ownerDetailsSchema);

@@ -36,6 +36,17 @@ const ticketSchema = new mongoose.Schema({
         ref : "Stop",
         required: true
     },
+    travellers: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Traveller",
+        }
+    ],
+    driver: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Staff",
+        required: true
+    },
     startTime: {
         type: String,
         required: true
@@ -52,12 +63,6 @@ const ticketSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    travellers: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Traveller",
-        }
-    ],
     status: {
         type: String,
         required: true

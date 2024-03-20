@@ -1,12 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  sendOTP,
-  signUp,
-  login,
-  changePassword,
-} = require("../controllers/auth");
+const {signUpPhone,loginUsingPhoneNumber,sendOTPPhone, changePasswordPhone, forgotPasswordPhone} = require('../controllers/authPhone')
 
 const {
   resetPasswordToken,
@@ -46,7 +41,7 @@ const { auth } = require("../middlewares/middleware");
      *      500:
      *        description: Server Error
      */
-router.post("/sendOTP", sendOTP);
+router.post("/sendOTP", sendOTPPhone);
 /**
      * @openapi
      * '/api/v1/auth/signUp':
@@ -99,7 +94,7 @@ router.post("/sendOTP", sendOTP);
      *      500:
      *        description: Server Error
      */
-router.post("/signUp", signUp);
+router.post("/signUp", signUpPhone);
 /**
      * @openapi
      * '/api/v1/auth/login':
@@ -135,8 +130,9 @@ router.post("/signUp", signUp);
      *      500:
      *        description: Server Error
      */
-router.post("/login", login);
-router.post("/changePassword", auth, changePassword);
+router.post('/login',loginUsingPhoneNumber)
+router.put("/changePassword", auth, changePasswordPhone);
+router.post('/forgotPassword',forgotPasswordPhone)
 
 router.post("/reset-Password-Token", resetPasswordToken);
 router.post("/reset-Password", resetPassword);

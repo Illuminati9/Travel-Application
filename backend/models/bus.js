@@ -26,6 +26,16 @@ const busSchema = new mongoose.Schema({
             ref: "Seat",
         }
     ],
+    sourceStop: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Stop",
+        required: true,
+    },
+    destinationStop: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Stop",
+        required: true,
+    },
     type: {
         type: String,
         required: true,

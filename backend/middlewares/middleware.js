@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { User, Owner, Admin, Staff } = require("../utils/enumTypes");
 require("dotenv").config();
 
 exports.auth = async (req, res, next) => {
@@ -36,7 +37,7 @@ exports.auth = async (req, res, next) => {
 
 exports.isUser = async (req, res, next) => {
   try {
-    if (req.user.accountType !== "Student") {
+    if (req.user.accountType !== User) {
       return res.status(401).json({
         success: false,
         message: "This is a Protected Route For Users Only",
@@ -51,10 +52,44 @@ exports.isUser = async (req, res, next) => {
   }
 };
 
+exports.isOwner = async (req, res, next) => {
+  try {
+    if (req.user.accountType !== Owner) {
+      return res.status(401).json({
+        success: false,
+        message: "This is a Protected Route For Owners Only",
+      });
+    }
+    next();
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "User Role Cannot be Verified, Please Try Again",
+    });
+  }
+};
+
+exports.isStaff = async (req, res, next) => {
+  try {
+    if (req.user.accountType !== Staff) {
+      return res.status(401).json({
+        success: false,
+        message: "This is a Protected Route For Staff Only",
+      });
+    }
+    next();
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "User Role Cannot be Verified, Please Try Again",
+    });
+  }
+}
+
 exports.isAdmin = async (req, res, next) => {
   try {
     console.log(req.user.accountType);
-    if (req.user.accountType !== "Admin") {
+    if (req.user.accountType !== Admin) {
       return res.status(401).json({
         success: false,
         message: "This is a Protected Route For Admin Only",
