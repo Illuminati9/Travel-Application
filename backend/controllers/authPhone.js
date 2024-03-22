@@ -1,23 +1,12 @@
 const User = require('../models/user')
 const OTPPhone = require('../models/otpPhone')
 const Profile = require('../models/profile')
-const otpGenerator = require('otp-generator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 require('dotenv').config();
 
-const generateOTP = async () => {
-    let otp;
-    do {
-        otp = otpGenerator.generate(6, {
-            upperCaseAlphabets: false,
-            lowerCaseAlphabets: false,
-            specialChars: false,
-        });
-    } while (await OTPPhone.findOne({ otp: otp }));
-    return otp;
-};
+const { generateOTP } = require('../utils/generateOTP');
 
 exports.sendOTPPhone = async (req, res) => {
     try {
@@ -119,7 +108,7 @@ exports.signUpPhone = async (req, res) => {
             });
         }
 
-        if (accountType == 'ADMIN') {
+        if (accountType == process.env.ADMIN_ROLE) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid Account Type",

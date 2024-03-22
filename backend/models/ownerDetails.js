@@ -36,6 +36,10 @@ const ownerDetailsSchema = new mongoose.Schema({
         unique: true,
         match: /^\S+@\S+\.\S+$/,
     },
+    buses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Bus",
+    }],
     address: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Address",

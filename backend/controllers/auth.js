@@ -1,25 +1,13 @@
 const User = require("../models/user");
 const OTP = require("../models/otp");
 const Profile = require("../models/profile");
-const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {
   passwordUpdated,
 } = require("../templates/email/passwordUpdateTemplate");
 require("dotenv").config();
-
-const generateOTP = async () => {
-  let otp;
-  do {
-    otp = otpGenerator.generate(6, {
-      upperCaseAlphabets: false,
-      lowerCaseAlphabets: false,
-      specialChars: false,
-    });
-  } while (await OTP.findOne({ otp: otp }));
-  return otp;
-};
+const {generateOTP} = require('../utils/generateOTP');
 
 exports.sendOTP = async (req, res) => {
   try {
@@ -30,15 +18,6 @@ exports.sendOTP = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Invalid email format",
-      });
-    }
-
-    const isExistingUser = await User.findOne({ email: email });
-
-    if (isExistingUser) {
-      return res.status(401).json({
-        success: false,
-        message: "User is Already Registered",
       });
     }
 

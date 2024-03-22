@@ -21,11 +21,11 @@
 ### Admin
 
 - #### Stop
-    - /admin/createStop
-    - /admin/deleteStop/:id
-    - /admin/editStop
-    - /admin/getStop/:id
-    - /admin/getStops
+    - [ ] /admin/createStop
+    - [ ] /admin/deleteStop/:id
+    - [ ] /admin/editStop
+    - [ ] /admin/getStop/:id
+    - [ ] /admin/getStops
 
 - #### Ticket
     - /admin/getTicket

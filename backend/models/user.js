@@ -44,6 +44,10 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Booking",
     }],
+    ownerDetails : {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Owner',
+    },
     active: {
       type: Boolean,
       default: true,

@@ -1,7 +1,9 @@
-const Admin = 'ADMIN';
-const User = 'USER';
-const Owner = "OWNER";
-const Staff = "STAFF";
+require('dotenv').config()
+
+const Admin = process.env.ADMIN_ROLE;
+const User = process.env.USER_ROLE;
+const Owner = process.env.OWNER_ROLE;
+const Staff = process.env.STAFF_ROLE;
 
 const Male = 'MALE';
 const Female = 'FEMALE';
