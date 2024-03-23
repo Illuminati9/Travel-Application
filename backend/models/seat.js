@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+const { Unavailable, Pending, Cancelled, Booked, Blocked, Available, Occupied } = require('../utils/enumTypes')
+
 const seatSchema = new mongoose.Schema({
     number: {
         type: Number,
@@ -8,13 +10,26 @@ const seatSchema = new mongoose.Schema({
     },
     status: {
         type: String,
+        required: true,
+        default: Available,
+        enum: [Unavailable, Pending, Cancelled, Booked, Blocked, Available, Occupied],
+    },
+    seatPlace: {
+        type: String,
+        required: true,
+        enum: ['Window', 'Aisle'],
+    },
+    seatType: {
+        type: String,
+        required: true,
+        enum: ['Seater', 'Sleeper'],
     },
     busId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Bus",
         required: true,
     },
-},{
+}, {
     timestamps: true
 })
 

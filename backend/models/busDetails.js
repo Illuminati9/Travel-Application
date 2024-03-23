@@ -1,13 +1,15 @@
 const mongoose = require('mongoose')
 
+const { Petrol, Diesel, Gas } = require('../utils/enumTypes')
+
 const busDetailsSchema = new mongoose.Schema({
-    busNumber: {
+    busId: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
     },
     busType: {
         type: String,
-        required: true
+        required: true,
+        enum: ['AC', 'Non-AC'],
     },
     capacity: {
         type: Number,
@@ -19,14 +21,16 @@ const busDetailsSchema = new mongoose.Schema({
             required: true
         }
     ],
-    fuelCapacity:{
+    fuelType: {
         type: String,
         required: true,
+        default: Diesel,
+        enum: [Petrol, Diesel, Gas],
         trim: true,
         minlength: 2,
         maxlength: 50
     },
-    fuelType:{
+    fuelCapacity: {
         type: String,
         required: true,
         trim: true,

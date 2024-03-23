@@ -5,7 +5,7 @@ const OTPPhone = require('../models/otpPhone')
 const Owner = require('../models/ownerDetails')
 const Address = require('../models/address')
 
-const {ownerS3UrlProof} = require('../utils/constants')
+const {ownerS3UrlProof,allowedFileTypes} = require('../utils/constants')
 const {uploadImageToS3_Type2, getObjectUrl} = require('../config/s3Server')
 
 exports.createOwner = async (req, res) => {
@@ -40,6 +40,13 @@ exports.createOwner = async (req, res) => {
         if(!user){
             return res.status(400).json({
                 message: "User not found",
+                success: false
+            })
+        }
+
+        if(!allowedFileTypes.includes(proofOfId.mimetype)){
+            return res.status(400).json({
+                message: "Invalid file type",
                 success: false
             })
         }

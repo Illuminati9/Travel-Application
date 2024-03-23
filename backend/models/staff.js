@@ -8,6 +8,11 @@ const staffSchema = new mongoose.Schema({
         minlength: 2,
         maxlength: 100,
     },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Owner",
+        required: true,
+    },
     buses : [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -30,6 +35,7 @@ const staffSchema = new mongoose.Schema({
     address: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Address",
+        required: true,
     },
     type: {
         type: String,

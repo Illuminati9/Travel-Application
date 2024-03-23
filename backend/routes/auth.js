@@ -14,6 +14,22 @@ const {
 
 const { auth } = require("../middlewares/middleware");
 
+router.get('/hello',async(req,res)=>{
+  try {
+    console.log(req.body.hello.hello);
+    return res.status(200).json({
+      success: true,
+      message: "Hello World"
+    })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      success: false,
+      message: "An Error Occurred",
+      error: error.message
+    })
+  }
+})
 
 router.post("/sendOTPPhone", sendOTPPhone);
 router.post('/sendOTP', sendOTP)

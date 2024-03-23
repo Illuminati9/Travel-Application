@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Admin, User } = require("../utils/enumTypes");
+const { Admin, User, Owner, Staff } = require("../utils/enumTypes");
 
 const userSchema = new mongoose.Schema(
   {
@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema(
     accountType: {
       type: String,
       default: User,
-      enum: [Admin, User],
+      enum: [Admin, User,Owner, Staff],
       required: true,
     },
     booking: [{

@@ -6,9 +6,9 @@ const { getStops, getStop, createStop, updateStop, deleteStop, getStopById } = r
 const {getUser, getUsers, getUserBasedPhoneNumber, getBookingsBasedOnPhoneNumber, getBookingsBasedOnUserId, getOwners, getBooking, getOwnerById, getBuses, getBusById} = require('../controllers/admin')
 
 //! Stop Routes
-router.get('/stops', auth,isAdmin, getStops)
-router.get('/stop',auth,isAdmin, getStop)
-router.get('/stop/:id',auth,isAdmin,getStopById)
+router.get('/stops', auth, getStops)
+router.get('/stop',auth, getStop)
+router.get('/stop/:id',auth,getStopById)
 router.post('/stop',auth,isAdmin, createStop)
 router.put('/stop/:id',auth,isAdmin, updateStop)
 router.delete('/stop/:id',auth,isAdmin, deleteStop)
