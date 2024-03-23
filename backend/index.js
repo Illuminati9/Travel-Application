@@ -6,9 +6,13 @@ const dotenv = require("dotenv");
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const swaggerUI = require('swagger-ui-express');
+const helmet = require('helmet')
 
 const userRoutes = require('./routes/auth');
 const profileRoutes = require('./routes/profile');
+const adminRoutes = require('./routes/admin');
+const ownerRoutes = require('./routes/owner')
+
 const swaggerSpec = require('./swagger');
 
 const fileparser = require('./config/parseFile');
@@ -18,6 +22,7 @@ require('dotenv').config({ path: '.env' })
 const port = process.env.PORT || 5000;
 
 app.use(cors());
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -34,6 +39,8 @@ app.get('/api/v1/', (req, res) => {
 
 app.use('/api/v1/auth', userRoutes);
 app.use('/api/v1/profile', profileRoutes);
+app.use('/api/v1/admin',adminRoutes)
+app.use('/api/v1/owner', ownerRoutes)
 
 connectToDatabase()
 

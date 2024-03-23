@@ -1,45 +1,23 @@
 const User = require("../models/user");
 const OTP = require("../models/otp");
 const Profile = require("../models/profile");
-const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {
   passwordUpdated,
 } = require("../templates/email/passwordUpdateTemplate");
 require("dotenv").config();
-
-const generateOTP = async () => {
-  let otp;
-  do {
-    otp = otpGenerator.generate(6, {
-      upperCaseAlphabets: false,
-      lowerCaseAlphabets: false,
-      specialChars: false,
-    });
-  } while (await OTP.findOne({ otp: otp }));
-  return otp;
-};
+const {generateOTP} = require('../utils/generateOTP');
 
 exports.sendOTP = async (req, res) => {
   try {
     const { email } = req.body;
-    console.log(email);
 
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (!emailPattern.test(email)) {
       return res.status(400).json({
         success: false,
         message: "Invalid email format",
-      });
-    }
-
-    const isExistingUser = await User.findOne({ email: email });
-
-    if (isExistingUser) {
-      return res.status(401).json({
-        success: false,
-        message: "User is Already Registered",
       });
     }
 
@@ -98,6 +76,7 @@ exports.signUp = async (req, res) => {
         message: "Please Provide a valid Email Address.",
       });
     }
+
 
     if (password !== confirmPassword) {
       return res.status(400).json({
@@ -185,6 +164,8 @@ exports.signUp = async (req, res) => {
     });
   }
 };
+
+
 
 exports.login = async (req, res) => {
   try {

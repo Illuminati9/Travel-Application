@@ -101,6 +101,7 @@ exports.deleteAccount = async (req, res) => {
 exports.updateDisplayPicture = async (req, res) => {
     try {
         console.log(req.files.file);
+        console.log(req.body);
         const displayPicture = req.files.file;
         const userId = req.user.id;
         console.log(req.user);

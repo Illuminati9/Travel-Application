@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Admin, User } = require("../utils/enumTypes");
+const { Admin, User, Owner, Staff } = require("../utils/enumTypes");
 
 const userSchema = new mongoose.Schema(
   {
@@ -19,10 +19,16 @@ const userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
       trim: true,
       unique: true,
       match: /^\S+@\S+\.\S+$/,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
+      match: /^\d{10}$/,  
     },
     password: {
       type: String,
@@ -30,8 +36,17 @@ const userSchema = new mongoose.Schema(
     },
     accountType: {
       type: String,
-      enum: [Admin, User],
+      default: User,
+      enum: [Admin, User,Owner, Staff],
       required: true,
+    },
+    booking: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Booking",
+    }],
+    ownerDetails : {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Owner',
     },
     active: {
       type: Boolean,
@@ -46,12 +61,6 @@ const userSchema = new mongoose.Schema(
       ref: "Profile",
       required: true,
     },
-    posts: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Post",
-      },
-    ],
     image: {
       type: String,
       required: true,
