@@ -7,6 +7,7 @@ const Address = require('../models/address')
 
 const {ownerS3UrlProof,allowedFileTypes} = require('../utils/constants')
 const {uploadImageToS3_Type2, getObjectUrl} = require('../config/s3Server')
+const { default: mongoose } = require('mongoose')
 
 exports.createOwner = async (req, res) => {
     try {
@@ -110,6 +111,49 @@ exports.createOwner = async (req, res) => {
 
     } catch (error) {
         console.log(error.message);
+        return res.status(500).json({
+            message: "Internal Server Error",
+            success: false,
+            error: error.message
+        })
+    }
+}
+
+
+
+exports.getOwner = async(req,res)=>{
+    try {
+        const {id} = req.body|| req.params || req.query;
+        if(!id){
+            return res.status(400).json({
+                message: "Owner Id is required",
+                success: false
+            })
+        }
+
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(400).json({
+                message: "Invalid Owner Id",
+                success: false
+            })
+        }
+
+        const owner = await Owner.findById(id);
+
+        if(!owner){
+            return res.status(404).json({
+                message: "Owner not found",
+                success: false
+            })
+        }
+
+        return res.status(200).json({
+            message: "Owner fetched successfully",
+            success: true,
+            owner
+        })
+    } catch (error) {
+        console.log(error)
         return res.status(500).json({
             message: "Internal Server Error",
             success: false,
