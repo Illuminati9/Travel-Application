@@ -2,11 +2,13 @@ const fs = require('fs')
 
 const User = require('../models/user')
 const OTPPhone = require('../models/otpPhone')
-const Owner = require('../models/ownerDetails')
+const OwnerModel = require('../models/ownerDetails')
 const Address = require('../models/address')
 
 const {ownerS3UrlProof,allowedFileTypes} = require('../utils/constants')
 const {uploadImageToS3_Type2, getObjectUrl} = require('../config/s3Server')
+const {Owner}= require('../utils/enumTypes')
+const { default: mongoose } = require('mongoose')
 
 exports.createOwner = async (req, res) => {
     try {
@@ -36,7 +38,7 @@ exports.createOwner = async (req, res) => {
             })
         }
 
-        const user = await User.findById(id)
+        const user = await User.findById(id);
         if(!user){
             return res.status(400).json({
                 message: "User not found",
@@ -83,7 +85,7 @@ exports.createOwner = async (req, res) => {
             })
         }
 
-        const owner = await Owner.create({
+        const owner = await OwnerModel.create({
             name: `${user.firstName} ${user.lastName}`,
             age,
             phoneNumber,
@@ -100,7 +102,12 @@ exports.createOwner = async (req, res) => {
             })
         }
 
-        const newOwner = await Owner.findById(owner._id).populate('address').exec();
+        user.ownerDetails=owner._id;
+        user.accountType=Owner;
+        await user.save();
+
+
+        const newOwner = await OwnerModel.findById(owner._id).populate('address').exec();
 
         return res.status(201).json({
             message: "Owner created successfully",
@@ -110,6 +117,49 @@ exports.createOwner = async (req, res) => {
 
     } catch (error) {
         console.log(error.message);
+        return res.status(500).json({
+            message: "Internal Server Error",
+            success: false,
+            error: error.message
+        })
+    }
+}
+
+
+
+exports.getOwner = async(req,res)=>{
+    try {
+        const {id} = req.body|| req.params || req.query;
+        if(!id){
+            return res.status(400).json({
+                message: "Owner Id is required",
+                success: false
+            })
+        }
+
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(400).json({
+                message: "Invalid Owner Id",
+                success: false
+            })
+        }
+
+        const owner = await OwnerModel.findById(id);
+
+        if(!owner){
+            return res.status(404).json({
+                message: "Owner not found",
+                success: false
+            })
+        }
+
+        return res.status(200).json({
+            message: "Owner fetched successfully",
+            success: true,
+            owner
+        })
+    } catch (error) {
+        console.log(error)
         return res.status(500).json({
             message: "Internal Server Error",
             success: false,

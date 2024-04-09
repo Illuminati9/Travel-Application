@@ -1,8 +1,6 @@
 node_modules/
-.env
-
 tmp/
 
+.env
 .DS_Store
-
 apiList.md

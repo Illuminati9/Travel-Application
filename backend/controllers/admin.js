@@ -169,6 +169,47 @@ exports.getOwnerById = async(req,res)=>{
     }
 }
 
+exports.getOwnerBasedOnName = async(req,res)=>{
+    try {
+        const {name} = req.body;
+
+        if(!name){
+            return res.status(400).json({
+                message: "Owner name is required",
+                success: false
+            })
+        }
+
+        const owner = await Owner.find
+        ({
+            name: {
+                $regex: name,
+                $options: 'i'
+            }
+        }).exec();
+
+        if(!owner){
+            return res.status(404).json({
+                message: "Owner not found",
+                success: false
+            })
+        }
+
+        return res.status(200).json({
+            message: "Owner fetched successfully",
+            success: true,
+            owner
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: "Internal Server Error",
+            success: false,
+            error: error.message
+        })
+    }
+}
+
 //! Booking Controllers
 
 exports.getBookingsBasedOnPhoneNumber = async(req,res)=>{
