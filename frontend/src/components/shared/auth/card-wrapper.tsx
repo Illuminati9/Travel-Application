@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card";
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+} from '@/components/ui/card';
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 type CardWrapperProps = {
   children: React.ReactNode;

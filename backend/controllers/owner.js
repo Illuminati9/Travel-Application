@@ -5,9 +5,9 @@ const OTPPhone = require('../models/otpPhone')
 const OwnerModel = require('../models/ownerDetails')
 const Address = require('../models/address')
 
-const {ownerS3UrlProof,allowedFileTypes} = require('../utils/constants')
-const {uploadImageToS3_Type2, getObjectUrl} = require('../config/s3Server')
-const {Owner}= require('../utils/enumTypes')
+const { ownerS3UrlProof, allowedFileTypes } = require('../utils/constants')
+const { uploadImageToS3_Type2, getObjectUrl } = require('../config/s3Server')
+const { Owner } = require('../utils/enumTypes')
 const { default: mongoose } = require('mongoose')
 
 exports.createOwner = async (req, res) => {
@@ -20,8 +20,8 @@ exports.createOwner = async (req, res) => {
             state,
             country,
             pinCode } = req.body;
-        const { phoneNumber,id } = req.user;
-        const {proofOfId} = req.files;
+        const { phoneNumber, id } = req.user;
+        const { proofOfId } = req.files;
 
         if (!age || !proofType || !proofOfId || !email || !street || !city || !state || !country || !pinCode || !otp) {
             return res.status(400).json({
@@ -39,14 +39,14 @@ exports.createOwner = async (req, res) => {
         }
 
         const user = await User.findById(id);
-        if(!user){
+        if (!user) {
             return res.status(400).json({
                 message: "User not found",
                 success: false
             })
         }
 
-        if(!allowedFileTypes.includes(proofOfId.mimetype)){
+        if (!allowedFileTypes.includes(proofOfId.mimetype)) {
             return res.status(400).json({
                 message: "Invalid file type",
                 success: false
@@ -64,7 +64,7 @@ exports.createOwner = async (req, res) => {
 
         const imageUrl = await getObjectUrl(filePath)
 
-        if(!imageUrl){
+        if (!imageUrl) {
             return res.status(404).json({
                 success: false,
                 message: "Failed to upload proof of id"
@@ -78,7 +78,7 @@ exports.createOwner = async (req, res) => {
             country,
             pinCode
         });
-        if(!address){
+        if (!address) {
             return res.status(400).json({
                 message: "Address not created",
                 success: false
@@ -95,15 +95,15 @@ exports.createOwner = async (req, res) => {
             address: address._id
         });
 
-        if(!owner){
+        if (!owner) {
             return res.status(400).json({
                 message: "Owner not created",
                 success: false
             })
         }
 
-        user.ownerDetails=owner._id;
-        user.accountType=Owner;
+        user.ownerDetails = owner._id;
+        user.accountType = Owner;
         await user.save();
 
 
@@ -127,17 +127,17 @@ exports.createOwner = async (req, res) => {
 
 
 
-exports.getOwner = async(req,res)=>{
+exports.getOwner = async (req, res) => {
     try {
-        const {id} = req.body|| req.params || req.query;
-        if(!id){
+        const { id } = req.body || req.params || req.query;
+        if (!id) {
             return res.status(400).json({
                 message: "Owner Id is required",
                 success: false
             })
         }
 
-        if(!mongoose.Types.ObjectId.isValid(id)){
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
                 message: "Invalid Owner Id",
                 success: false
@@ -146,7 +146,7 @@ exports.getOwner = async(req,res)=>{
 
         const owner = await OwnerModel.findById(id);
 
-        if(!owner){
+        if (!owner) {
             return res.status(404).json({
                 message: "Owner not found",
                 success: false
@@ -167,4 +167,3 @@ exports.getOwner = async(req,res)=>{
         })
     }
 }
-

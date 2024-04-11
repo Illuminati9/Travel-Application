@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const BusRoutes = () => {
-  return (
-    <div>BusRoutes</div>
-  )
-}
+  return <div>BusRoutes</div>;
+};
 
-export default BusRoutes
+export default BusRoutes;

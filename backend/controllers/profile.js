@@ -44,7 +44,7 @@ exports.updateProfile = async (req, res) => {
 exports.getUserDetails = async (req, res) => {
     try {
         const userId = req.user.id;
-        const userDetails = await User.findById(userId,{password: 0})
+        const userDetails = await User.findById(userId, { password: 0 })
             .populate("additionalDetails")
             .exec();
 
@@ -155,7 +155,7 @@ exports.updateDisplayPicture = async (req, res) => {
                 message: "Failed to update profile picture",
             });
         }
-        
+
         const updatedUser = await User.findByIdAndUpdate(
             userId,
             { image: imageUrl },

@@ -1,5 +1,5 @@
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import React, { useEffect } from "react";
+import useAxiosPrivate from '@/hooks/useAxiosPrivate';
+import React, { useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -7,9 +7,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import Loading from "./Loading";
-import { Link } from "react-router-dom";
+} from '@/components/ui/table';
+import Loading from './Loading';
+import { Link } from 'react-router-dom';
 
 type User = {
   accountType: string;
@@ -38,10 +38,10 @@ const OwnersPage = () => {
     const getOwner = async () => {
       try {
         const response = await axiosPrivate.get(`/api/v1/admin/owner/`);
-        console.log("User details in the UserPage", response.data.users);
+        console.log('User details in the UserPage', response.data.users);
         isMounted && setUsers(response.data.users);
       } catch (err) {
-        console.error("This is the error", err);
+        console.error('This is the error', err);
       } finally {
         isMounted && setisLoading(false);
       }
@@ -93,15 +93,15 @@ const OwnersPage = () => {
         {(users as unknown as User[])?.map((user: User) => (
           <TableRow key={user._id}>
             <TableCell>
-              <Link to={`/admin/user/owners /${user._id}`}>
+              <Link to={`/admin/user/owners/${user._id}`}>
                 {user._id.slice(0, 10)}
               </Link>
             </TableCell>
             <TableCell className=" capitalize">{user.firstName}</TableCell>
             <TableCell>{user.lastName}</TableCell>
             <TableCell>{user.phoneNumber}</TableCell>
-            <TableCell>{user.accountType === "oWnEr" && "Owner"}</TableCell>
-            <TableCell>{user.active ? "Active" : "Inactive"}</TableCell>
+            <TableCell>{user.accountType === 'oWnEr' && 'Owner'}</TableCell>
+            <TableCell>{user.active ? 'Active' : 'Inactive'}</TableCell>
           </TableRow>
         ))}
       </TableBody>

@@ -1,8 +1,8 @@
-import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "./hooks/userAuth";
-import TopBar from "./components/shared/Topbar";
-import Sidebar from "./components/shared/Sidebar";
+import React from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from './hooks/userAuth';
+import TopBar from './components/shared/Topbar';
+import Sidebar from './components/shared/Sidebar';
 
 interface PrivateRouteProps {
   component: React.ComponentType<unknown>;

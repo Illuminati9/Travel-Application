@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import { Input } from "../ui/input";
-import Loading from "./Loading";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import useAxiosPrivate from '@/hooks/useAxiosPrivate';
+import { Input } from '../ui/input';
+import Loading from './Loading';
+import { useLocation } from 'react-router-dom';
 
 type user = {
   _id: string;
@@ -39,12 +39,12 @@ const UserIdPage = () => {
     const getUser = async () => {
       try {
         const response = await axiosPrivate.get(
-          `/api/v1/admin/user/${location.pathname.split("/")[3]}`
+          `/api/v1/admin/user/${location.pathname.split('/')[3]}`,
         );
-        console.log("User details", response.data.user);
+        console.log('User details', response.data.user);
         isMounted && setUser(response.data.user);
       } catch (err) {
-        console.error("This is the error", err);
+        console.error('This is the error', err);
       } finally {
         isMounted && setLoading(false);
       }

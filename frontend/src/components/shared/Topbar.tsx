@@ -5,10 +5,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ExitIcon } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
+} from '@/components/ui/dropdown-menu';
+import { ExitIcon } from '@radix-ui/react-icons';
+import { useEffect, useState } from 'react';
+import useAxiosPrivate from '@/hooks/useAxiosPrivate';
 
 type user = {
   _id: string;
@@ -44,11 +44,11 @@ const TopBar = () => {
     const getUser = async () => {
       try {
         const response = await axiosPrivate.get(
-          `/api/v1/profile/getUserDetails`
+          `/api/v1/profile/getUserDetails`,
         );
         isMounted && setUser(response.data.userDetails);
       } catch (err) {
-        console.error("This is the rror", err);
+        console.error('This is the rror', err);
       } finally {
         isMounted && setIsPending(false);
       }
@@ -66,10 +66,10 @@ const TopBar = () => {
       const response = await axiosPrivate.post(`/api/v1/auth/logout`);
 
       if (response.status === 204) {
-        window.location.href = "/auth/verify/number";
+        window.location.href = '/auth/verify/number';
       }
     } catch (err) {
-      console.error("Error during logout", err);
+      console.error('Error during logout', err);
     }
   };
 

@@ -1,5 +1,5 @@
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import React, { useEffect } from "react";
+import useAxiosPrivate from '@/hooks/useAxiosPrivate';
+import React, { useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -7,9 +7,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import Loading from "./Loading";
-import { Link } from "react-router-dom";
+} from '@/components/ui/table';
+import Loading from './Loading';
+import { Link } from 'react-router-dom';
 
 type User = {
   accountType: string;
@@ -38,10 +38,10 @@ const UserPage = () => {
     const getUser = async () => {
       try {
         const response = await axiosPrivate.get(`/api/v1/admin/users/`);
-        console.log("User details in the UserPage", response.data.users);
+        console.log('User details in the UserPage', response.data.users);
         isMounted && setUsers(response.data.users);
       } catch (err) {
-        console.error("This is the error", err);
+        console.error('This is the error', err);
       } finally {
         isMounted && setisLoading(false);
       }
@@ -101,15 +101,15 @@ const UserPage = () => {
             <TableCell>{user.lastName}</TableCell>
             <TableCell>{user.phoneNumber}</TableCell>
             <TableCell>
-              {user.accountType === "aDMIn"
-                ? "Admin"
-                : user.accountType === "oWnEr"
-                ? "Owner"
-                : user.accountType === "stAFf"
-                ? "Staff"
-                : "User"}
+              {user.accountType === 'aDMIn'
+                ? 'Admin'
+                : user.accountType === 'oWnEr'
+                  ? 'Owner'
+                  : user.accountType === 'stAFf'
+                    ? 'Staff'
+                    : 'User'}
             </TableCell>
-            <TableCell>{user.active ? "Active" : "Inactive"}</TableCell>
+            <TableCell>{user.active ? 'Active' : 'Inactive'}</TableCell>
           </TableRow>
         ))}
       </TableBody>

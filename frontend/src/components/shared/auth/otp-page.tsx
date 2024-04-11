@@ -1,56 +1,56 @@
-import { useState } from "react";
-import CardWrapper from "./card-wrapper";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react';
+import CardWrapper from './card-wrapper';
+import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { NumberVerificationSchema } from "@/schemas";
-import { FormError } from "../form-error";
-import { FormSuccess } from "../form-success";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import axiosInstance from "@/api/axios";
+} from '@/components/ui/form';
+import * as z from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { NumberVerificationSchema } from '@/schemas';
+import { FormError } from '../form-error';
+import { FormSuccess } from '../form-success';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import axiosInstance from '@/api/axios';
 
 const OTPForm = () => {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
+  const [error, setError] = useState<string | undefined>('');
+  const [success, setSuccess] = useState<string | undefined>('');
   const [isPending, setIsPending] = useState(false);
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof NumberVerificationSchema>>({
     resolver: zodResolver(NumberVerificationSchema),
     defaultValues: {
-      phoneNumber: "",
+      phoneNumber: '',
     },
   });
 
   const onSubmit = async (values: z.infer<typeof NumberVerificationSchema>) => {
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
     try {
       setIsPending(true);
       await axiosInstance
         .post(`/api/v1/auth/sendOTPPhone`, values)
         .then((data) => {
-          setSuccess("OTP sent successfully");
+          setSuccess('OTP sent successfully');
           if (data.status === 200) {
-            navigate("/auth/login");
+            navigate('/auth/login');
             sessionStorage.clear();
-            sessionStorage.setItem("phoneNumber", values.phoneNumber);
+            sessionStorage.setItem('phoneNumber', values.phoneNumber);
           }
         })
         .finally(() => {
           setIsPending(false);
         });
     } catch (err) {
-      setError("Failed to send otp. Try again later");
+      setError('Failed to send otp. Try again later');
     }
   };
   return (
@@ -64,7 +64,7 @@ const OTPForm = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
               <div className="flex gap-x-2 ">
-                <Input value={"+91"} className="w-[12%]" readOnly />
+                <Input value={'+91'} className="w-[12%]" readOnly />
                 <FormField
                   control={form.control}
                   name="phoneNumber"

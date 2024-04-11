@@ -76,14 +76,13 @@
   }
 }
 
-
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   appearance: none;
 }
 
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 
@@ -91,7 +90,6 @@ input[type=number] {
   font-weight: 500;
   font-family: 'Poppins', sans-serif;
 }
-
 
 @keyframes spinLoader {
   to {
@@ -118,7 +116,8 @@ input[type=number] {
 
 .spinLoader2 {
   transform-origin: center;
-  animation: spinLoader2 1.5s ease-in-out infinite,
+  animation:
+    spinLoader2 1.5s ease-in-out infinite,
     spinLoader 3.4s linear infinite;
   animation-direction: alternate;
 }
