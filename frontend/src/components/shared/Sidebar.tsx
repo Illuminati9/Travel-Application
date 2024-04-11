@@ -1,6 +1,6 @@
-import MobileNv from "./MobileNav";
-import { Link } from "react-router-dom";
-import NavItems from "./NavItems";
+import MobileNv from './MobileNav';
+import { Link } from 'react-router-dom';
+import NavItems from './NavItems';
 
 const Sidebar = () => {
   return (
@@ -13,7 +13,7 @@ const Sidebar = () => {
       >
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 space-y-2">
           <Link
-            to={"/"}
+            to={'/'}
             className="flex items-center p-2 text-gray-900 rounded-lg"
           >
             <span className="ms-3 font-bold text-2xl">Travel application</span>

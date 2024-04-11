@@ -1,13 +1,13 @@
-import { Separator } from "@/components/ui/separator";
+import { Separator } from '@/components/ui/separator';
 import {
   Sheet,
   SheetContent,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import TopBar from "./Topbar";
-import NavItems from "./NavItems";
-import { Link } from "react-router-dom";
+} from '@/components/ui/sheet';
+import TopBar from './Topbar';
+import NavItems from './NavItems';
+import { Link } from 'react-router-dom';
 
 const MobileNv = () => {
   return (
@@ -32,17 +32,17 @@ const MobileNv = () => {
         </SheetTrigger>
         <SheetContent
           className="w-[300px] flex flex-col gap-6 bg-white overflow-auto md:hidden"
-          side={"left"}
+          side={'left'}
         >
           <SheetTitle>
             <Link
-              to={"/"}
+              to={'/'}
               className="flex items-center p-2 text-gray-900 rounded-lg"
             >
               <span className="ms-3 font-bold text-2xl">
                 Travel application
               </span>
-            </Link>{" "}
+            </Link>{' '}
           </SheetTitle>
           <Separator className="border border-gray-50" />
           <NavItems />

@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import Loading from "./Loading";
+import { useEffect, useState } from 'react';
+import useAxiosPrivate from '@/hooks/useAxiosPrivate';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import Loading from './Loading';
 
 type user = {
   _id: string;
@@ -38,12 +38,12 @@ const ProfilePage = () => {
     const getUser = async () => {
       try {
         const response = await axiosPrivate.get(
-          `/api/v1/profile/getUserDetails`
+          `/api/v1/profile/getUserDetails`,
         );
-        console.log("User details", response.data.userDetails);
+        console.log('User details', response.data.userDetails);
         isMounted && setUser(response.data.userDetails);
       } catch (err) {
-        console.error("This is the error", err);
+        console.error('This is the error', err);
       } finally {
         isMounted && setLoading(false);
       }
@@ -65,10 +65,10 @@ const ProfilePage = () => {
       const response = await axiosPrivate.post(`/api/v1/auth/logout`);
 
       if (response.status === 204) {
-        window.location.href = "/auth/verify/number";
+        window.location.href = '/auth/verify/number';
       }
     } catch (err) {
-      console.error("Error during logout", err);
+      console.error('Error during logout', err);
     }
   };
 
@@ -101,7 +101,7 @@ const ProfilePage = () => {
         <Button
           onClick={handleLogout}
           className="w-full mt-4"
-          variant={"destructive"}
+          variant={'destructive'}
         >
           Log Out
         </Button>

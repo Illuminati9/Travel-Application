@@ -42,7 +42,7 @@ exports.createBus = async (req, res) => {
         }
 
         const numberPattern = /^[A-Za-z]{2}\s\d{2}\s[A-Za-z]{2}\s\d{4}$/;
-        if(!numberPattern.test(number)){
+        if (!numberPattern.test(number)) {
             return res.status(400).json({
                 success: false,
                 message: "Registration Number of the Bus doen't follow the norms",
@@ -117,26 +117,26 @@ exports.createBus = async (req, res) => {
 
 
         const busDetailsInstance = await BusDetailsModel.create({
-           busType, capacity, certificates: certificatesArray, fuelType, fuelCapacity
+            busType, capacity, certificates: certificatesArray, fuelType, fuelCapacity
         });
-        
+
         const busInstance = await BusModel.create({
-            name, 
-            number, 
-            seatCapacity, 
-            sourceStop, 
-            destinationStop, 
-            parkingAddress: addressInstance._id, 
-             busDetails: busDetailsInstance._id
+            name,
+            number,
+            seatCapacity,
+            sourceStop,
+            destinationStop,
+            parkingAddress: addressInstance._id,
+            busDetails: busDetailsInstance._id
         })
 
         busDetailsInstance.busId = busInstance._id;
 
         await busDetailsInstance.save();
         await busInstance.save();
-        
+
         // const seatsArray = [];
-        
+
         // for(let i=1;i<=seatCapacity; i++){
         //     const seat = await SeatModel.create({
         //         number: i,
@@ -193,17 +193,17 @@ exports.getBuses = async (req, res) => {
     }
 }
 
-exports.getBus = async(req,res)=>{
+exports.getBus = async (req, res) => {
     try {
-        const {id}= req.body || req.params|| req.query;
-        if(!id){
+        const { id } = req.body || req.params || req.query;
+        if (!id) {
             return res.status(400).json({
                 success: false,
                 message: "Bus ID is Required",
             });
         }
 
-        if(!mongoose.Types.ObjectId.isValid(id)){
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid Bus ID",
@@ -229,19 +229,19 @@ exports.getBus = async(req,res)=>{
 
 //? Seats Controllers for Bus
 
-exports.createSeats = async (req,res)=>{
+exports.createSeats = async (req, res) => {
     try {
-        const  { seatCapacity, seatArray} = req.body;
-        const {busId} = req.params || req.query;
-        const {id} = req.user;
-        if(!busId || !seatCapacity || !seatArray){
+        const { seatCapacity, seatArray } = req.body;
+        const { busId } = req.params || req.query;
+        const { id } = req.user;
+        if (!busId || !seatCapacity || !seatArray) {
             return res.status(400).json({
                 success: false,
                 message: "Please give required details",
             });
         }
 
-        if(!mongoose.Types.ObjectId.isValid(busId)){
+        if (!mongoose.Types.ObjectId.isValid(busId)) {
             return res.status(404).json({
                 success: false,
                 message: "Invalid Bus ID",
@@ -249,14 +249,14 @@ exports.createSeats = async (req,res)=>{
         }
 
         const user = await UserModel.findById(id);
-        if(!user){
+        if (!user) {
             return res.status(404).json({
                 success: false,
                 message: "User Not Found",
             })
         }
 
-        if(user.accountType != Owner){
+        if (user.accountType != Owner) {
             return res.status(400).json({
                 success: false,
                 message: "You are not an owner",
@@ -265,14 +265,14 @@ exports.createSeats = async (req,res)=>{
 
 
         const bus = await BusModel.findById(busId);
-        if(!bus){
+        if (!bus) {
             return res.status(404).json({
                 success: false,
                 message: "Bus Not Found",
             })
         }
 
-        if(bus.ownerId.toString() != id){
+        if (bus.ownerId.toString() != id) {
             return res.status(400).json({
                 success: false,
                 message: "You are not the owner of the bus",
@@ -280,9 +280,9 @@ exports.createSeats = async (req,res)=>{
         }
 
         const seatsArray = [];
-        for(var seat in seatArray){
-            const {number, seatPlace, seatType} = seat;
-            if(!number || !seatPlace || !seatType){
+        for (var seat in seatArray) {
+            const { number, seatPlace, seatType } = seat;
+            if (!number || !seatPlace || !seatType) {
                 return res.status(400).json({
                     success: false,
                     message: "Please give required seat details",
@@ -315,21 +315,21 @@ exports.createSeats = async (req,res)=>{
             success: false,
             message: "An Error Occurred While Creating Seats",
             error: error.message,
-        })        
+        })
     }
 }
 
-exports.getSeats = async(req,res)=>{
+exports.getSeats = async (req, res) => {
     try {
-        const {busId} = req.params || req.query;
-        if(!busId){
+        const { busId } = req.params || req.query;
+        if (!busId) {
             return res.status(400).json({
                 success: false,
                 message: "Please give required details",
             });
         }
 
-        if(!mongoose.Types.ObjectId.isValid(busId)){
+        if (!mongoose.Types.ObjectId.isValid(busId)) {
             return res.status(404).json({
                 success: false,
                 message: "Invalid Bus ID",
@@ -337,7 +337,7 @@ exports.getSeats = async(req,res)=>{
         }
 
         const bus = await BusModel.findById(busId).populate('seats').exec();
-        if(!bus){
+        if (!bus) {
             return res.status(404).json({
                 success: false,
                 message: "Bus Not Found",
@@ -361,19 +361,19 @@ exports.getSeats = async(req,res)=>{
 }
 
 
-exports.editSeats = async(req,res)=>{
+exports.editSeats = async (req, res) => {
     try {
-        const { seatCapacity, seatArray} = req.body;
-        const {busId} = req.params || req.query;
-        const {id} = req.user;
-        if(!busId || !seatCapacity || !seatArray){
+        const { seatCapacity, seatArray } = req.body;
+        const { busId } = req.params || req.query;
+        const { id } = req.user;
+        if (!busId || !seatCapacity || !seatArray) {
             return res.status(400).json({
                 success: false,
                 message: "Please give required details",
             });
         }
 
-        if(!mongoose.Types.ObjectId.isValid(busId)){
+        if (!mongoose.Types.ObjectId.isValid(busId)) {
             return res.status(404).json({
                 success: false,
                 message: "Invalid Bus ID",
@@ -381,14 +381,14 @@ exports.editSeats = async(req,res)=>{
         }
 
         const user = await UserModel.findById(id);
-        if(!user){
+        if (!user) {
             return res.status(404).json({
                 success: false,
                 message: "User Not Found",
             })
         }
 
-        if(user.accountType != Owner){
+        if (user.accountType != Owner) {
             return res.status(400).json({
                 success: false,
                 message: "You are not an owner",
@@ -396,28 +396,28 @@ exports.editSeats = async(req,res)=>{
         }
 
         const bus = await BusModel.findById(busId);
-        if(!bus){
+        if (!bus) {
             return res.status(404).json({
                 success: false,
                 message: "Bus Not Found",
             })
         }
 
-        if(bus.ownerId.toString() != id){
+        if (bus.ownerId.toString() != id) {
             return res.status(400).json({
                 success: false,
                 message: "You are not the owner of the bus",
             })
         }
 
-        for(var seatId in bus.seats){
-            await SeatModel.deleteOne({_id: seatId});
+        for (var seatId in bus.seats) {
+            await SeatModel.deleteOne({ _id: seatId });
         }
 
         const seatsArray = [];
-        for(var seat in seatArray){
-            const {number, seatPlace, seatType} = seat;
-            if(!number || !seatPlace || !seatType){
+        for (var seat in seatArray) {
+            const { number, seatPlace, seatType } = seat;
+            if (!number || !seatPlace || !seatType) {
                 return res.status(400).json({
                     success: false,
                     message: "Please give required seat details",
@@ -450,26 +450,26 @@ exports.editSeats = async(req,res)=>{
             success: false,
             message: "An Error Occurred While Editing Seats",
             error: error.message,
-        })        
+        })
     }
 }
 
 //! Stop Controllers for Bus
 
-exports.addStops = async(req,res)=>{
+exports.addStops = async (req, res) => {
     try {
-        const {stops} = req.body;
-        const {busId} = req.params || req.query;
-        const {id} = req.user;
+        const { stops } = req.body;
+        const { busId } = req.params || req.query;
+        const { id } = req.user;
 
-        if(!stops || !busId){
+        if (!stops || !busId) {
             return res.status(400).json({
                 success: false,
                 message: "Please give required details",
             });
         }
 
-        if(!mongoose.Types.ObjectId.isValid(busId)){
+        if (!mongoose.Types.ObjectId.isValid(busId)) {
             return res.status(404).json({
                 success: false,
                 message: "Invalid Bus ID",
@@ -477,14 +477,14 @@ exports.addStops = async(req,res)=>{
         }
 
         const user = await UserModel.findById(id);
-        if(!user){
+        if (!user) {
             return res.status(404).json({
                 success: false,
                 message: "User Not Found",
             })
         }
 
-        if(user.accountType != Owner){
+        if (user.accountType != Owner) {
             return res.status(400).json({
                 success: false,
                 message: "You are not an owner",
@@ -492,14 +492,14 @@ exports.addStops = async(req,res)=>{
         }
 
         const bus = await BusModel.findById(busId);
-        if(!bus){
+        if (!bus) {
             return res.status(404).json({
                 success: false,
                 message: "Bus Not Found",
             })
         }
 
-        if(bus.ownerId.toString() != id){
+        if (bus.ownerId.toString() != id) {
             return res.status(400).json({
                 success: false,
                 message: "You are not the owner of the bus",
@@ -507,14 +507,14 @@ exports.addStops = async(req,res)=>{
         }
 
         const stopsArray = [];
-        for(var stop in stops){
+        for (var stop in stops) {
             const stopInstance = await StopModel.findById(stop);
-            if(!stopInstance){
+            if (!stopInstance) {
                 return res.status(404).json({
                     success: false,
                     message: "Stop Not Found",
                 })
-            }   
+            }
 
             stopsArray.push(stopInstance._id);
         }
@@ -537,19 +537,19 @@ exports.addStops = async(req,res)=>{
     }
 }
 
-exports.getStops = async(req,res)=>{
+exports.getStops = async (req, res) => {
     try {
-        const {busId} = req.params || req.query;
+        const { busId } = req.params || req.query;
         // const {id} = req.user;
 
-        if(!busId){
+        if (!busId) {
             return res.status(400).json({
                 success: false,
                 message: "Please give required details",
             });
         }
 
-        if(!mongoose.Types.ObjectId.isValid(busId)){
+        if (!mongoose.Types.ObjectId.isValid(busId)) {
             return res.status(404).json({
                 success: false,
                 message: "Invalid Bus ID",
@@ -557,7 +557,7 @@ exports.getStops = async(req,res)=>{
         }
 
         const bus = await BusModel.findById(busId).populate('stops').exec();
-        if(!bus){
+        if (!bus) {
             return res.status(404).json({
                 success: false,
                 message: "Bus Not Found",
@@ -580,19 +580,19 @@ exports.getStops = async(req,res)=>{
     }
 }
 
-exports.editStops = async(req,res)=>{
+exports.editStops = async (req, res) => {
     try {
-        const { stops} = req.body;
-        const {busId} = req.params || req.query;
-        const {id} = req.user;
-        if(!stops || !busId){
+        const { stops } = req.body;
+        const { busId } = req.params || req.query;
+        const { id } = req.user;
+        if (!stops || !busId) {
             return res.status(400).json({
                 success: false,
                 message: "Please give required details",
             });
         }
 
-        if(!mongoose.Types.ObjectId.isValid(busId)){
+        if (!mongoose.Types.ObjectId.isValid(busId)) {
             return res.status(404).json({
                 success: false,
                 message: "Invalid Bus ID",
@@ -600,21 +600,21 @@ exports.editStops = async(req,res)=>{
         }
 
         const user = await UserModel.findById(id);
-        if(!user){
+        if (!user) {
             return res.status(404).json({
                 success: false,
                 message: "User Not Found",
             })
         }
 
-        if(user.accountType != Owner){
+        if (user.accountType != Owner) {
             return res.status(400).json({
                 success: false,
                 message: "You are not an owner",
             })
         }
 
-        if(user.ownerDetails.toString() != id){
+        if (user.ownerDetails.toString() != id) {
             return res.status(400).json({
                 success: false,
                 message: "You are not the owner of the bus",
@@ -622,7 +622,7 @@ exports.editStops = async(req,res)=>{
         }
 
         const bus = await BusModel.findById(busId);
-        if(!bus){
+        if (!bus) {
             return res.status(404).json({
                 success: false,
                 message: "Bus Not Found",
@@ -630,9 +630,9 @@ exports.editStops = async(req,res)=>{
         }
 
         const stopsArray = [];
-        for(var stop in stops){
+        for (var stop in stops) {
             const stopInstance = await StopModel.findById(stop);
-            if(!stopInstance){
+            if (!stopInstance) {
                 return res.status(404).json({
                     success: false,
                     message: "Stop Not Found",

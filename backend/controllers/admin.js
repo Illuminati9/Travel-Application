@@ -37,11 +37,11 @@ exports.getUsers = async (req, res) => {
     }
 }
 
-exports.getUser = async(req,res)=>{
+exports.getUser = async (req, res) => {
     try {
-        const {id} = req.params || req.query;
+        const { id } = req.params || req.query;
 
-        if(!mongoose.Types.ObjectId.isValid(id)){
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid User ID",
@@ -49,7 +49,7 @@ exports.getUser = async(req,res)=>{
         }
 
         const user = await UserModel.findById(id);
-        if(!user){
+        if (!user) {
             return res.status(400).json({
                 success: true,
                 message: "User Not Found",
@@ -71,10 +71,10 @@ exports.getUser = async(req,res)=>{
     }
 }
 
-exports.getUserBasedPhoneNumber = async(req,res)=>{
+exports.getUserBasedPhoneNumber = async (req, res) => {
     try {
-        const {phoneNumber} = req.body || req.query || req.params;
-        if(!phoneNumber){
+        const { phoneNumber } = req.body || req.query || req.params;
+        if (!phoneNumber) {
             return res.status(400).json({
                 success: false,
                 message: "Phone Number is Required",
@@ -84,7 +84,7 @@ exports.getUserBasedPhoneNumber = async(req,res)=>{
         const regex = new RegExp(phoneNumber, 'i'); // 'i' flag for case-insensitive match
 
         const users = await UserModel.find({ phoneNumber: regex });
-        if(!users){
+        if (!users) {
             return res.status(400).json({
                 success: true,
                 message: "User Not Found",
@@ -109,10 +109,10 @@ exports.getUserBasedPhoneNumber = async(req,res)=>{
 
 //! Owner Controllers
 
-exports.getOwners = async(req,res)=>{
+exports.getOwners = async (req, res) => {
     try {
-        const users = await UserModel.find({accountType: Owner});
-        if(!users){
+        const users = await UserModel.find({ accountType: Owner });
+        if (!users) {
             return res.status(400).json({
                 success: true,
                 message: "No Owners Found",
@@ -134,25 +134,25 @@ exports.getOwners = async(req,res)=>{
     }
 }
 
-exports.getOwnerById = async(req,res)=>{
+exports.getOwnerById = async (req, res) => {
     try {
-        const {id} = req.params || req.query;
-        if(!id){
+        const { id } = req.params || req.query;
+        if (!id) {
             return res.status(400).json({
                 success: false,
                 message: "Owner ID is Required",
             });
         }
 
-        if(!mongoose.Types.ObjectId.isValid(id)){
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid Owner ID",
             });
         }
 
-        const user = await UserModel.findOne({ownerDetails: id}).populate('ownerDetails').exec();
-        if(!user){
+        const user = await UserModel.findOne({ ownerDetails: id }).populate('ownerDetails').exec();
+        if (!user) {
             return res.status(400).json({
                 success: false,
                 message: "Owner Not Found",
@@ -169,11 +169,11 @@ exports.getOwnerById = async(req,res)=>{
     }
 }
 
-exports.getOwnerBasedOnName = async(req,res)=>{
+exports.getOwnerBasedOnName = async (req, res) => {
     try {
-        const {name} = req.body;
+        const { name } = req.body;
 
-        if(!name){
+        if (!name) {
             return res.status(400).json({
                 message: "Owner name is required",
                 success: false
@@ -181,14 +181,14 @@ exports.getOwnerBasedOnName = async(req,res)=>{
         }
 
         const owner = await Owner.find
-        ({
-            name: {
-                $regex: name,
-                $options: 'i'
-            }
-        }).exec();
+            ({
+                name: {
+                    $regex: name,
+                    $options: 'i'
+                }
+            }).exec();
 
-        if(!owner){
+        if (!owner) {
             return res.status(404).json({
                 message: "Owner not found",
                 success: false
@@ -212,10 +212,10 @@ exports.getOwnerBasedOnName = async(req,res)=>{
 
 //! Booking Controllers
 
-exports.getBookingsBasedOnPhoneNumber = async(req,res)=>{
+exports.getBookingsBasedOnPhoneNumber = async (req, res) => {
     try {
-        const {phoneNumber} = req.body || req.params;
-        if(!phoneNumber){
+        const { phoneNumber } = req.body || req.params;
+        if (!phoneNumber) {
             return res.status(400).json({
                 success: false,
                 message: "Phone Number is Required",
@@ -223,23 +223,23 @@ exports.getBookingsBasedOnPhoneNumber = async(req,res)=>{
         }
 
         const phoneNumberPattern = /^\d{10}$/;
-        if(!phoneNumberPattern.test(phoneNumber)){
+        if (!phoneNumberPattern.test(phoneNumber)) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid Phone Number",
             });
         }
 
-        const user = await UserModel.findOne({phoneNumber: phoneNumber}); 
-        if(!user){
+        const user = await UserModel.findOne({ phoneNumber: phoneNumber });
+        if (!user) {
             return res.status(400).json({
                 success: false,
                 message: "User Not Found",
             });
         }
 
-        const bookings = await BookingModel.find({userId: user._id}).populate('ticketId').exec();
-        if(!bookings){
+        const bookings = await BookingModel.find({ userId: user._id }).populate('ticketId').exec();
+        if (!bookings) {
             return res.status(400).json({
                 success: false,
                 message: "No Bookings Found",
@@ -261,25 +261,25 @@ exports.getBookingsBasedOnPhoneNumber = async(req,res)=>{
     }
 }
 
-exports.getBookingsBasedOnUserId = async(req,res)=>{
+exports.getBookingsBasedOnUserId = async (req, res) => {
     try {
-        const {userId} = req.body || req.params || req.query;
-        if(!userId){
+        const { userId } = req.body || req.params || req.query;
+        if (!userId) {
             return res.status(400).json({
                 success: false,
                 message: "User ID is Required",
             });
         }
-        
-        if(!mongoose.Types.ObjectId.isValid(id)){
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid User ID",
             });
         }
 
-        const bookings = await BookingModel.find({userId: userId}).populate('ticketId').exec();
-        if(!bookings){
+        const bookings = await BookingModel.find({ userId: userId }).populate('ticketId').exec();
+        if (!bookings) {
             return res.status(400).json({
                 success: true,
                 message: "No Bookings Found",
@@ -301,17 +301,17 @@ exports.getBookingsBasedOnUserId = async(req,res)=>{
     }
 }
 
-exports.getBooking = async(req,res)=>{
+exports.getBooking = async (req, res) => {
     try {
-        const {id} = req.body || req.params || req.query;
-        if(!id){
+        const { id } = req.body || req.params || req.query;
+        if (!id) {
             return res.status(400).json({
                 success: false,
                 message: "Booking ID is Required",
             });
         }
 
-        if(!mongoose.Types.ObjectId.isValid(id)){
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid Booking ID",
@@ -320,7 +320,7 @@ exports.getBooking = async(req,res)=>{
 
         const booking = await BookingModel.findById(id).populate('ticketId').populate('userId').exec();
 
-        if(!booking){
+        if (!booking) {
             return res.status(200).json({
                 success: true,
                 message: "Booking Not Found",
@@ -343,10 +343,10 @@ exports.getBooking = async(req,res)=>{
 }
 
 //! Bus Routes
-exports.getBuses = async(req,res)=>{
+exports.getBuses = async (req, res) => {
     try {
         const buses = await BusModel.find({});
-        if(!buses){
+        if (!buses) {
             return res.status(400).json({
                 success: true,
                 message: "No Buses Found",
@@ -368,17 +368,17 @@ exports.getBuses = async(req,res)=>{
     }
 }
 
-exports.getBusById = async(req,res)=>{
+exports.getBusById = async (req, res) => {
     try {
-        const {id} = req.params || req.query;
-        if(!id){
+        const { id } = req.params || req.query;
+        if (!id) {
             return res.status(400).json({
                 success: false,
                 message: "Bus ID is Required",
             });
         }
 
-        if(!mongoose.Types.ObjectId.isValid(id)){
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid Bus ID",
@@ -387,7 +387,7 @@ exports.getBusById = async(req,res)=>{
 
         const bus = await BusModel.findById(id);
 
-        if(!bus){
+        if (!bus) {
             return res.status(200).json({
                 success: true,
                 message: "Bus Not Found",

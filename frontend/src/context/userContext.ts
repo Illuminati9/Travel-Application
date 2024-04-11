@@ -1,5 +1,5 @@
 // AuthContext.ts
-import { Dispatch, SetStateAction, createContext } from "react";
+import { Dispatch, SetStateAction, createContext } from 'react';
 
 export type AuthType = {
   accessToken: string | null;

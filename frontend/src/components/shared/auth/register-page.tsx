@@ -1,42 +1,42 @@
-import { useState } from "react";
-import CardWrapper from "./card-wrapper";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react';
+import CardWrapper from './card-wrapper';
+import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { RegisterSchema } from "@/schemas";
-import { FormError } from "../form-error";
-import { FormSuccess } from "../form-success";
-import { Button } from "@/components/ui/button";
-import axiosInstance from "@/api/axios";
+} from '@/components/ui/form';
+import * as z from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { RegisterSchema } from '@/schemas';
+import { FormError } from '../form-error';
+import { FormSuccess } from '../form-success';
+import { Button } from '@/components/ui/button';
+import axiosInstance from '@/api/axios';
 
 const RegisterForm = () => {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
+  const [error, setError] = useState<string | undefined>('');
+  const [success, setSuccess] = useState<string | undefined>('');
   const [isPending, setIsPending] = useState(false);
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      phoneNumber: sessionStorage.getItem("phoneNumber") ?? "",
-      password: "",
-      confirmPassword: "",
-      otp: "",
+      firstName: '',
+      lastName: '',
+      phoneNumber: sessionStorage.getItem('phoneNumber') ?? '',
+      password: '',
+      confirmPassword: '',
+      otp: '',
     },
   });
 
   const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
 
     try {
       setIsPending(true);
@@ -44,19 +44,19 @@ const RegisterForm = () => {
         .post(`/api/v1/auth/signUp`, values)
         .then((res) => {
           console.log(res);
-          setSuccess("Registration successful!");
+          setSuccess('Registration successful!');
           sessionStorage.clear();
         })
         .catch((error) => {
-          console.error("Error during registration:", error);
+          console.error('Error during registration:', error);
           setError(error.response.data.message);
         })
         .finally(() => {
           setIsPending(false);
         });
     } catch (error) {
-      console.error("Error during registration:", error);
-      setError("Registration failed. Please try again.");
+      console.error('Error during registration:', error);
+      setError('Registration failed. Please try again.');
     }
   };
 
@@ -107,7 +107,7 @@ const RegisterForm = () => {
                 />
               </div>
               <div className="flex gap-x-2 ">
-                <Input value={"+91"} className="w-[12%]" readOnly />
+                <Input value={'+91'} className="w-[12%]" readOnly />
                 <FormField
                   control={form.control}
                   name="phoneNumber"

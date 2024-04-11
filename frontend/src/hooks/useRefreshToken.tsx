@@ -1,5 +1,5 @@
-import axios from "axios";
-import { useAuth } from "./userAuth.tsx";
+import axios from 'axios';
+import { useAuth } from './userAuth.tsx';
 
 const useRefreshToken = () => {
   const { setAuth } = useAuth();
@@ -9,7 +9,7 @@ const useRefreshToken = () => {
         `${import.meta.env.VITE_BASE_URL}/api/v1/auth/refreshRoute`,
         {
           withCredentials: true,
-        }
+        },
       );
       console.log(response);
       setAuth((prev) => {
@@ -21,7 +21,7 @@ const useRefreshToken = () => {
       });
       return response.data.accessToken;
     } catch (error) {
-      console.log("Error in refresh token", error);
+      console.log('Error in refresh token', error);
     }
   };
   return refresh;
