@@ -9,6 +9,7 @@ const busDetailsSchema = new mongoose.Schema({
     busType: {
         type: String,
         required: true,
+        default: 'Non-AC',
         enum: ['AC', 'Non-AC'],
     },
     capacity: {

@@ -6,7 +6,8 @@ const stopSchema = new mongoose.Schema({
         required: true
     },
     stopAddress: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Address',
         required: true
     },
     city: {

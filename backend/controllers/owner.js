@@ -19,11 +19,13 @@ exports.createOwner = async (req, res) => {
             city,
             state,
             country,
-            pinCode } = req.body;
+            pincode,otp } = req.body;
         const { phoneNumber,id } = req.user;
         const {proofOfId} = req.files;
 
-        if (!age || !proofType || !proofOfId || !email || !street || !city || !state || !country || !pinCode || !otp) {
+        console.log(age,proofType,email);
+
+        if (!age || !proofType || !proofOfId || !email || !street || !city || !state || !country || !pincode || !otp) {
             return res.status(400).json({
                 message: "All fields are required",
                 success: false
@@ -34,6 +36,14 @@ exports.createOwner = async (req, res) => {
         if (!emailPattern.test(email)) {
             return res.status(400).json({
                 message: "Please Provide a valid Email Address.",
+                success: false
+            })
+        }
+
+        const ownerDetails1 = await OwnerModel.findOne({ email });
+        if (ownerDetails1) {
+            return res.status(400).json({
+                message: "Owner Already Exists",
                 success: false
             })
         }
@@ -76,7 +86,7 @@ exports.createOwner = async (req, res) => {
             city,
             state,
             country,
-            pinCode
+            pincode
         });
         if(!address){
             return res.status(400).json({
@@ -104,8 +114,8 @@ exports.createOwner = async (req, res) => {
 
         user.ownerDetails=owner._id;
         user.accountType=Owner;
+        user.email=email;
         await user.save();
-
 
         const newOwner = await OwnerModel.findById(owner._id).populate('address').exec();
 
