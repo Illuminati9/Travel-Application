@@ -110,12 +110,12 @@ exports.signUpPhone = async (req, res) => {
             });
         }
 
-        // if (accountType == process.env.ADMIN_ROLE) {
-        //     return res.status(400).json({
-        //         success: false,
-        //         message: "Invalid Account Type",
-        //     });
-        // }
+        if (accountType == process.env.ADMIN_ROLE) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Account Type",
+            });
+        }
 
         if(accountType==null){
             accountType=process.env.USER_ROLE;

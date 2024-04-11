@@ -20,8 +20,6 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       trim: true,
-      // unique: true,
-      match: /^\S+@\S+\.\S+$/,
     },
     phoneNumber: {
       type: String,

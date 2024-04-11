@@ -35,8 +35,6 @@ const ownerDetailsSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        unique: true,
-        match: /^\S+@\S+\.\S+$/,
     },
     staff: [{
         type: mongoose.Schema.Types.ObjectId,
