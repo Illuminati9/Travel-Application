@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const { signUpPhone, loginUsingPhoneNumber, sendOTPPhone, changePasswordPhone, forgotPasswordPhone } = require('../controllers/authPhone')
+const { signUpPhone, loginUsingPhoneNumber, sendOTPPhone, changePasswordPhone, forgotPasswordPhone, refreshRoute,
+  logout } = require('../controllers/authPhone')
 
 const { sendOTP } = require('../controllers/auth')
 
@@ -42,6 +43,8 @@ router.post("/signUp", signUpPhone);
 router.post('/login', loginUsingPhoneNumber)
 router.put("/changePassword", auth, changePasswordPhone);
 router.post('/forgotPassword', forgotPasswordPhone)
+router.get("/refreshRoute", refreshRoute);
+router.post("/logout", logout);
 
 router.post("/reset-Password-Token", resetPasswordToken);
 router.post("/reset-Password", resetPassword);

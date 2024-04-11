@@ -177,4 +177,3 @@ exports.getOwner = async(req,res)=>{
         })
     }
 }
-
