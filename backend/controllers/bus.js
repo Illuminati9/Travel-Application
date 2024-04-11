@@ -12,15 +12,22 @@ const StopModel = require('../models/stop')
 
 const { Owner } = require('../utils/enumTypes')
 const { busS3Url, allowedFileTypes } = require('../utils/constants')
+const { uploadImageToS3_Type2, getObjectUrl } = require('../config/s3Server')
 
 exports.createBus = async (req, res) => {
     try {
-        const { name, number, seatCapacity, sourceStop, destinationStop, parkingAddress, busDetails } = req.body;
-        const { street, city, state, country, pinCode } = parkingAddress;
+        let { name, number, seatCapacity, sourceStop, destinationStop, parkingAddress, busDetails } = req.body;
+        if(typeof(parkingAddress) =='string'){
+            parkingAddress = JSON.parse(parkingAddress);
+        }
+        if(typeof(busDetails) =='string'){
+            busDetails = JSON.parse(busDetails);
+        }
+        const { street, city, state, country, pincode } = parkingAddress;
         const { busType, capacity, fuelType, fuelCapacity } = busDetails;
         const { certificates } = req.files;
 
-        if (!name || !number || !seatCapacity || !sourceStop || !destinationStop || !parkingAddress || !stops || !busDetails) {
+        if (!name || !number || !seatCapacity || !sourceStop || !destinationStop || !parkingAddress || !busDetails) {
             return res.status(400).json({
                 success: false,
                 message: "Please give required details"
@@ -34,7 +41,7 @@ exports.createBus = async (req, res) => {
             })
         }
 
-        if (!street || !city || !state || !country || !pinCode) {
+        if (!street || !city || !state || !country || !pincode) {
             return res.status(400).json({
                 success: false,
                 message: "Please give required parking address details"
@@ -46,6 +53,29 @@ exports.createBus = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: "Registration Number of the Bus doen't follow the norms",
+            })
+        }
+
+        const busInstance1 = await BusModel.findOne({number});
+        if(busInstance1){
+            return res.status(400).json({
+                success: false,
+                message: "Bus with this number already exists"
+            })
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(sourceStop) || !mongoose.Types.ObjectId.isValid(destinationStop)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Stop ID",
+            })
+        }
+
+        const pincodePattern = /^\d{6}$/;
+        if (!pincodePattern.test(pincode)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Pincode",
             })
         }
 
@@ -73,10 +103,6 @@ exports.createBus = async (req, res) => {
                 message: "Owner Not Found"
             })
         }
-
-        const addressInstance = await AddressModel.create({
-            street, city, state, country, pinCode
-        })
 
         const certificatesArray = [];
         for (const certificate of certificates) {
@@ -115,8 +141,20 @@ exports.createBus = async (req, res) => {
             certificatesArray.push(imageUrl);
         }
 
+        console.log(certificatesArray);
 
-        const busDetailsInstance = await BusDetailsModel.create({
+        // return res.status(200).json({
+        //     success: true,
+        //     message: "Certificates Uploaded Successfully",
+        //     certificates: certificatesArray
+        // });
+
+
+        const addressInstance = await AddressModel.create({
+            street, city, state, country, pincode
+        })
+
+        let busDetailsInstance = await BusDetailsModel.create({
             busType, capacity, certificates: certificatesArray, fuelType, fuelCapacity
         });
 
@@ -127,7 +165,8 @@ exports.createBus = async (req, res) => {
             sourceStop,
             destinationStop,
             parkingAddress: addressInstance._id,
-            busDetails: busDetailsInstance._id
+            busDetails: busDetailsInstance._id,
+            ownerId: owner._id,
         })
 
         busDetailsInstance.busId = busInstance._id;
@@ -135,24 +174,12 @@ exports.createBus = async (req, res) => {
         await busDetailsInstance.save();
         await busInstance.save();
 
-        // const seatsArray = [];
-
-        // for(let i=1;i<=seatCapacity; i++){
-        //     const seat = await SeatModel.create({
-        //         number: i,
-        //         busId: busInstance._id,
-        //     })
-
-        //     seatsArray.push(seat);
-        // }
-
-        // busInstance.seats = seatsArray;
-        // await busInstance.save();
+        let bus = await BusModel.findById(busInstance._id).populate('sourceStop').populate('destinationStop').populate('parkingAddress').populate('busDetails').exec();
 
         return res.status(201).json({
             success: true,
             message: "Bus Created Successfully",
-            bus: busInstance,
+            bus: bus,
             busDetails,
             address: addressInstance
         });
@@ -169,7 +196,7 @@ exports.createBus = async (req, res) => {
 
 exports.getBuses = async (req, res) => {
     try {
-        const buses = await BusModel.find().populate('sourceStop').populate('destinationStop').populate('stops').populate('parkingAddress').populate('busDetails').populate('seats');
+        const buses = await BusModel.find().populate('sourceStop').populate('destinationStop').populate('stops').populate('parkingAddress').populate('busDetails').populate('seats').exec();
 
         if (!buses) {
             return res.status(400).json({

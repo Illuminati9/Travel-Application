@@ -1,6 +1,7 @@
 const User = require('../models/user')
 const OTP = require('../models/otp')
 const Stop = require('../models/stop')
+const AddressModel = require('../models/address')
 
 exports.getStops = async (req, res) => {
     try {
@@ -93,10 +94,35 @@ exports.getStop = async (req, res) => {
 exports.createStop = async (req,res)=>{
     try {
         const {stopName, stopAddress, city, pincode} = req.body;
+        const {street, state, country} = stopAddress;
+
+        if(!stopName || !street || !city || !state || !country || !pincode) {
+            return res.status(400).json({
+                success: false,
+                message: "Please Provide All The Required Details"
+            })
+        }
+
+        const pincodeRegex =/^\d{6}$/;
+
+        if(!pincodeRegex.test(pincode)) {
+            return res.status(400).json({
+                success: false,
+                message: "Please Provide A Valid Pincode"
+            })
+        }
+
+        const address = await AddressModel.create({
+            street,
+            city,
+            state,
+            country,
+            pincode
+        })
 
         const stop = await Stop.create({
             stopName,
-            stopAddress,
+            stopAddress: address._id,
             city,
             pincode
         });
@@ -125,9 +151,27 @@ exports.createStop = async (req,res)=>{
 
 exports.updateStop = async (req, res) => {
     try {
-        const {id} = req.params;
+        const {id,addressId} = req.params;
         const {stopName, stopAddress, city, pincode} = req.body;
+        const {street, state, country} = stopAddress;
+
+        if(!stopName || !street || !state || !country || !city || !pincode) {
+            return res.status(400).json({
+                success: false,
+                message: "Please Provide All The Required Details"
+            })
+        }
+
         
+
+        const pincodeRegex =/^\d{6}$/;
+        if(!pincodeRegex.test(pincode)) {
+            return res.status(400).json({
+                success: false,
+                message: "Please Provide A Valid Pincode"
+            })
+        }
+    
         const stop = await Stop.findByIdAndUpdate(id, {
             stopName,
             stopAddress,

@@ -23,6 +23,8 @@ const ownerDetailsSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+        default: "Aadhar Card",
+        enum: ["Aadhar Card", "Voter ID", "Passport", "Driving License", "PAN Card"],
     },
     proofOfId: {
         type: String,

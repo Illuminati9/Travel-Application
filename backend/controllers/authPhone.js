@@ -41,7 +41,7 @@ exports.sendOTPPhone = async (req, res) => {
 
 exports.signUpPhone = async (req, res) => {
     try {
-        const {
+        let {
             firstName,
             lastName,
             phoneNumber,
@@ -50,7 +50,7 @@ exports.signUpPhone = async (req, res) => {
             accountType,
             otp,
         } = req.body;
-
+       
         if (!firstName || !lastName || !phoneNumber || !confirmPassword || !otp) {
             return res.status(400).json({
                 success: false,
@@ -110,11 +110,15 @@ exports.signUpPhone = async (req, res) => {
             });
         }
 
-        if (accountType == process.env.ADMIN_ROLE) {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid Account Type",
-            });
+        // if (accountType == process.env.ADMIN_ROLE) {
+        //     return res.status(400).json({
+        //         success: false,
+        //         message: "Invalid Account Type",
+        //     });
+        // }
+
+        if(accountType==null){
+            accountType=process.env.USER_ROLE;
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);

@@ -10,10 +10,10 @@ router.get('/stops', auth, getStops)
 router.get('/stop',auth, getStop)
 router.get('/stop/:id',auth,getStopById)
 router.post('/stop',auth,isAdmin, createStop)
-router.put('/stop/:id',auth,isAdmin, updateStop)
+router.put('/stop/:id/address/:addressId',auth,isAdmin, updateStop)
 router.delete('/stop/:id',auth,isAdmin, deleteStop)
 
-//! User Routes
+//! Admin Routes
 router.get('/users',auth,isAdmin, getUsers)
 router.get('/user/:id',auth,isAdmin, getUser)
 router.get('/userPhone',auth,isAdmin, getUserBasedPhoneNumber)
