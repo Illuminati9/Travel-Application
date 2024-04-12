@@ -28,6 +28,7 @@ exports.sendOTPPhone = async (req, res) => {
         res.status(200).json({
             success: true,
             message: "OTP Sent Successfully to registered mobile number",
+            newOTP
         });
     } catch (error) {
         console.log(error.message);
@@ -135,6 +136,7 @@ exports.signUpPhone = async (req, res) => {
             lastName,
             phoneNumber,
             password: hashedPassword,
+            accountType,
             image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
             additionalDetails: profileDetails._id,
         });
@@ -163,7 +165,7 @@ exports.generateAccessToken = async (userId) => {
         id: user._id,
         accountType: user.accountType,
     };
-
+    console.log('payload',payload);
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "30d",
     });
@@ -192,13 +194,14 @@ exports.generateRefreshToken = (userId) => {
 exports.loginUsingPhoneNumber = async (req, res) => {
     try {
         const { phoneNumber, otp } = req.body;
-
+        console.log(1)
         if (!phoneNumber || !otp) {
             return res.status(400).json({
                 success: false,
                 message: "Please Provide Both Phone Number and OTP to Login.",
             });
         }
+        console.log(1)
 
         const phoneNumberPattern = /^\d{10}$/;
         if (!phoneNumberPattern.test(phoneNumber)) {
@@ -207,6 +210,7 @@ exports.loginUsingPhoneNumber = async (req, res) => {
                 message: "Invalid phone number format",
             });
         }
+        console.log(1)
 
         const otpDigits = /^\d{6}$/;
         if (!otpDigits.test(otp)) {
@@ -215,11 +219,12 @@ exports.loginUsingPhoneNumber = async (req, res) => {
                 message: "Invalid OTP format. OTP should be a 6-digit number.",
             });
         }
-
+        console.log(otp)
         const recentOTP = await OTPPhone.findOne({ phoneNumber })
             .sort({ createdAt: -1 })
             .limit(1);
-        if (!recentOTP || (recentOTP.length > 0 && recentOTP[0].otp !== otp)) {
+        console.log(recentOTP.otp)
+        if (!recentOTP || (recentOTP.length > 0 && recentOTP.otp !== otp)) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid OTP.",
@@ -234,6 +239,7 @@ exports.loginUsingPhoneNumber = async (req, res) => {
                 message: "Invalid Credentials. User is not Registered. Please Sign up.",
             });
         }
+        console.log(user._id +'lksdflksjdflkjsadlkfmnslknmlksdnclksjdkl')
 
         if (user.token) {
             return res.status(401).json({
@@ -241,10 +247,10 @@ exports.loginUsingPhoneNumber = async (req, res) => {
                 message: "User is Already logged in.",
             });
         }
-
+        console.log(1)
         const token = await this.generateAccessToken(user._id);
         const refreshToken = await this.generateRefreshToken(user._id);
-
+        console.log(token)
         user.token = token;
         user.password = undefined;
 

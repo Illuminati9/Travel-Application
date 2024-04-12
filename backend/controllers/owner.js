@@ -23,7 +23,7 @@ exports.createOwner = async (req, res) => {
         const { phoneNumber,id } = req.user;
         const {proofOfId} = req.files;
 
-        console.log(age,proofType,email);
+        console.log(phoneNumber,id);
 
         if (!age || !proofType || !proofOfId || !email || !street || !city || !state || !country || !pincode || !otp) {
             return res.status(400).json({

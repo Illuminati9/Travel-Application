@@ -34,22 +34,41 @@ router.get('/hello', async (req, res) => {
   }
 })
 
-router.post("/sendOTPPhone", sendOTPPhone);
-router.post('/sendOTP', sendOTP)
-router.post("/verifyOTPPhone", verifyOTPPhone);
-router.post('/verifyOTPEmail', verifyOTPEmail)
+router.post("/sendOTPPhone", sendOTPPhone);  //Working
+router.post('/sendOTP', sendOTP) //Working
+router.post("/verifyOTPPhone", verifyOTPPhone); //Working
+router.post('/verifyOTPEmail', verifyOTPEmail) //Working
 
-router.post("/signUp", signUpPhone);
-router.post('/login', loginUsingPhoneNumber)
-router.put("/changePassword", auth, changePasswordPhone);
-router.post('/forgotPassword', forgotPasswordPhone)
-router.get("/refreshRoute", refreshRoute);
-router.post("/logout", logout);
+router.post("/signUp", signUpPhone); //Working
+router.post('/login', loginUsingPhoneNumber)  //Working
+router.put("/changePassword", auth, changePasswordPhone); //Working
+router.post('/forgotPassword', forgotPasswordPhone) //Working
+router.get("/refreshRoute", refreshRoute); //Working
+router.post("/logout", logout); //Working
 
-router.post("/reset-Password-Token", resetPasswordToken);
-router.post("/reset-Password", resetPassword);
+router.post("/reset-Password-Token", resetPasswordToken); //Working
+router.post("/reset-Password", resetPassword);  //Working
 
-router.post("/reset-Password-Token-Phone", resetPasswordTokenPhone);
-router.post("/reset-Password-Phone", resetPassword);
+router.post("/reset-Password-Token-Phone", resetPasswordTokenPhone); //Working
+router.post("/reset-Password-Phone", resetPassword); //Working
+
+router.post('/randomRoute',auth,async(req,res)=>{
+  try {
+    const {phoneNumber, id} = req.user;
+    console.log(req.user,'lkdjf;alsjdlckas clwkjdlkj hellow rodld');
+    return res.status(200).json({
+      success: true,
+      message: "Hello World",
+      phoneNumber,
+      id
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "An Error Occurred",
+      error: error.message
+    })
+  }
+})
 
 module.exports = router;

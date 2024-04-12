@@ -2,27 +2,27 @@ const express = require('express')
 const router = express.Router()
 
 const { isAdmin, isUser, auth } = require('../middlewares/middleware')
-const { getStops, getStop, createStop, updateStop, deleteStop, getStopById } = require('../controllers/stop')
+const { getStops, createStop, updateStop, deleteStop, getStopById, getStopByName } = require('../controllers/stop')
 const {getUser, getUsers, getUserBasedPhoneNumber, getBookingsBasedOnPhoneNumber, getBookingsBasedOnUserId, getOwners, getBooking, getOwnerById, getBuses, getBusById} = require('../controllers/admin')
 
 //! Stop Routes
-router.get('/stops', auth, getStops)
-router.get('/stop',auth, getStop)
-router.get('/stop/:id',auth,getStopById)
-router.post('/stop',auth,isAdmin, createStop)
-router.put('/stop/:id/address/:addressId',auth,isAdmin, updateStop)
-router.delete('/stop/:id',auth,isAdmin, deleteStop)
+router.get('/stops', auth, getStops)  // Working
+router.get('/stop',auth, getStopByName) //Working
+router.get('/stop/:id',auth,getStopById)   //Working
+router.post('/stop',auth,isAdmin, createStop)  //Working
+router.put('/stop/:id',auth,isAdmin, updateStop)  //Working
+router.delete('/stop/:id',auth,isAdmin, deleteStop)  //Working
 
 //! Admin Routes
-router.get('/users',auth,isAdmin, getUsers)
-router.get('/user/:id',auth,isAdmin, getUser)
-router.get('/userPhone',auth,isAdmin, getUserBasedPhoneNumber)
-router.get('/owner',auth,isAdmin, getOwners)
-router.get('/owner/:id',auth,isAdmin, getOwnerById);
+router.get('/users',auth,isAdmin, getUsers) //Working
+router.get('/user/:id',auth,isAdmin, getUser) // Working
+router.get('/userPhone',auth,isAdmin, getUserBasedPhoneNumber)  //Working
+router.get('/owners',auth,isAdmin, getOwners)  //Working
+router.get('/owner/:id',auth,isAdmin, getOwnerById); // Working
 
 //! Bus Routes
-router.get('/buses',auth,isAdmin, getBuses)
-router.get('/bus/:id',auth,isAdmin,getBusById);
+router.get('/buses',auth,isAdmin, getBuses)  //Working
+router.get('/bus/:id',auth,isAdmin,getBusById); //Working
 
 //! Booking Routes
 router.get('/bookings/:phoneNumber', auth, isAdmin, getBookingsBasedOnPhoneNumber)

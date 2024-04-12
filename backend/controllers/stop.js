@@ -57,9 +57,16 @@ exports.getStopById = async(req,res)=>{
     }
 }
 
-exports.getStop = async (req, res) => {
+exports.getStopByName = async (req, res) => {
     try {
         const { name } = req.query;
+
+        if (!name) {
+            return res.status(400).json({
+                success: false,
+                message: "Please Provide A Name"
+            })
+        }
 
         const stops = await Stop.find({
             $or: [
@@ -151,7 +158,7 @@ exports.createStop = async (req,res)=>{
 
 exports.updateStop = async (req, res) => {
     try {
-        const {id,addressId} = req.params;
+        const {id} = req.params;
         const {stopName, stopAddress, city, pincode} = req.body;
         const {street, state, country} = stopAddress;
 
@@ -171,13 +178,25 @@ exports.updateStop = async (req, res) => {
                 message: "Please Provide A Valid Pincode"
             })
         }
+
+        const stopInstance = await Stop.findById(id);
+
+        const stopAddressInstance = await AddressModel.findByIdAndUpdate(stopInstance.stopAddress, {
+            street,
+            city,
+            state,
+            country,
+            pincode
+        }, {new: true});
     
         const stop = await Stop.findByIdAndUpdate(id, {
             stopName,
-            stopAddress,
+            stopAddress: stopAddressInstance._id,
             city,
             pincode
         }, {new: true});
+
+        const finalStop = await Stop.findById(id).populate('stopAddress').exec();
 
         if(!stop) {
             return res.status(400).json({
@@ -189,7 +208,7 @@ exports.updateStop = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Stop Updated Successfully",
-            stop
+            stop: finalStop
         });
     } catch (error) {
         console.log(error.message)
@@ -205,7 +224,11 @@ exports.deleteStop = async(req,res)=>{
     try {
         const {id} = req.params;
 
-        const stop = await Stop.findByIdAndDelete(id);
+        const stopInstance = await Stop.findById(id);
+
+        await AddressModel.findByIdAndDelete(stopInstance.stopAddress);
+
+        await Stop.findByIdAndDelete(id);
 
         return res.status(200).json({
             success: true,

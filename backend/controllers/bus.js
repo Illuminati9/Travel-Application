@@ -71,6 +71,15 @@ exports.createBus = async (req, res) => {
             })
         }
 
+        const sourceStopInstance = await StopModel.findById(sourceStop);
+        const destinationStopInstance = await StopModel.findById(destinationStop);
+        if (!sourceStopInstance || !destinationStopInstance) {
+            return res.status(404).json({
+                success: false,
+                message: "Stop Not Found",
+            })
+        }
+
         const pincodePattern = /^\d{6}$/;
         if (!pincodePattern.test(pincode)) {
             return res.status(400).json({
@@ -166,13 +175,16 @@ exports.createBus = async (req, res) => {
             destinationStop,
             parkingAddress: addressInstance._id,
             busDetails: busDetailsInstance._id,
-            ownerId: owner._id,
+            ownerId: user._id,
         })
 
         busDetailsInstance.busId = busInstance._id;
 
         await busDetailsInstance.save();
         await busInstance.save();
+
+        owner.buses.push(busInstance._id);
+        await owner.save();
 
         let bus = await BusModel.findById(busInstance._id).populate('sourceStop').populate('destinationStop').populate('parkingAddress').populate('busDetails').exec();
 
