@@ -13,7 +13,7 @@ const { Admin, User, Staff, Owner } = require('../utils/enumTypes')
 
 exports.getUsers = async (req, res) => {
     try {
-        const users = await UserModel.find({});
+        const users = await UserModel.find({ accountType: { $ne: process.env.ADMIN_ROLE } }, { password: 0 }).populate('additionalDetails').exec();
 
         if (!users) {
             return res.status(400).json({
@@ -48,7 +48,7 @@ exports.getUser = async (req, res) => {
             });
         }
 
-        const user = await UserModel.findById(id);
+        const user = await UserModel.findOne({ _id: id }, { password: 0 }).populate('additionalDetails').exec();
         if (!user) {
             return res.status(400).json({
                 success: true,
@@ -74,6 +74,7 @@ exports.getUser = async (req, res) => {
 exports.getUserBasedPhoneNumber = async (req, res) => {
     try {
         const { phoneNumber } = req.body || req.query || req.params;
+        console.log(phoneNumber,'d;fa;lkjdfl;kj falksjdfl asdlkfjn;aksjdm cs;df');
         if (!phoneNumber) {
             return res.status(400).json({
                 success: false,
@@ -83,7 +84,7 @@ exports.getUserBasedPhoneNumber = async (req, res) => {
 
         const regex = new RegExp(phoneNumber, 'i'); // 'i' flag for case-insensitive match
 
-        const users = await UserModel.find({ phoneNumber: regex });
+        const users = await UserModel.find({ phoneNumber: regex , accountType :{ $ne: process.env.ADMIN_ROLE } }, { password: 0 }).populate('additionalDetails').exec();
         if (!users) {
             return res.status(400).json({
                 success: true,
@@ -111,18 +112,26 @@ exports.getUserBasedPhoneNumber = async (req, res) => {
 
 exports.getOwners = async (req, res) => {
     try {
-        const users = await UserModel.find({ accountType: Owner });
+        const users = await UserModel.find({ accountType: process.env.OWNER_ROLE },{password: 0});
+
+        
         if (!users) {
             return res.status(400).json({
                 success: true,
                 message: "No Owners Found",
             })
         }
+        const finalUsers = [];
+        for(let i=0;i<users.length;i++){
+            const user = await UserModel.findOne({ _id: users[i]._id }, { password: 0 }).populate('ownerDetails').populate('additionalDetails').exec();
+
+            finalUsers.push(user);
+        }
 
         return res.status(200).json({
             success: true,
             message: "Owners Fetched Successfully",
-            users,
+            users: finalUsers,
         });
     } catch (error) {
         console.log(error)
@@ -151,7 +160,7 @@ exports.getOwnerById = async (req, res) => {
             });
         }
 
-        const user = await UserModel.findOne({ ownerDetails: id }).populate('ownerDetails').exec();
+        const user = await UserModel.findOne({ _id: id }).populate('ownerDetails').populate('additionalDetails').exec();
         if (!user) {
             return res.status(400).json({
                 success: false,
@@ -385,19 +394,23 @@ exports.getBusById = async (req, res) => {
             });
         }
 
-        const bus = await BusModel.findById(id);
-
+        const bus = await BusModel.findById(id).populate('seats').populate('sourceStop').populate('destinationStop').populate('stops').populate('parkingAddress').populate('staffId').populate('busDetails').exec();
+        
         if (!bus) {
             return res.status(200).json({
                 success: true,
                 message: "Bus Not Found",
             });
         }
+        
+        const owner = await UserModel.findById(bus.ownerId,{password: 0}).populate('ownerDetails').exec();
+        bus.ownerId = null;
 
         return res.status(200).json({
             success: true,
             message: "Bus Fetched Successfully",
             bus,
+            owner
         });
     } catch (error) {
         console.log(error)

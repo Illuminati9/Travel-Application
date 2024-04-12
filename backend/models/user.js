@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema(
     }],
     ownerDetails : {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Owner',
+      ref: 'OwnerDetails',
     },
     active: {
       type: Boolean,
