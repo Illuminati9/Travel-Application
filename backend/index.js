@@ -13,6 +13,7 @@ const userRoutes = require("./routes/auth");
 const profileRoutes = require("./routes/profile");
 const adminRoutes = require("./routes/admin");
 const ownerRoutes = require("./routes/owner");
+const universalRoutes = require('./routes/universal')
 
 const swaggerSpec = require("./swagger");
 
@@ -50,6 +51,7 @@ app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/owner", ownerRoutes);
+app.use('/api/v1/universal',universalRoutes);
 
 connectToDatabase();
 

@@ -234,7 +234,7 @@ exports.getBuses = async (req, res) => {
 
 exports.getBus = async (req, res) => {
     try {
-        const { id } = req.body || req.params || req.query;
+        const { id } = req.params || req.body ||  req.query;
         if (!id) {
             return res.status(400).json({
                 success: false,
