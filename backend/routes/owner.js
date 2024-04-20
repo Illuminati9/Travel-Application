@@ -5,12 +5,12 @@ const {createOwner} = require('../controllers/owner')
 const {auth,isUser,isStaff,isOwner} = require('../middlewares/middleware')
 const { createBus, getBuses, getBus, createSeats, addStops, getStops, editStops, getSeats, editSeats } = require('../controllers/bus')
 
-router.post('/registerOwner',auth,createOwner)
+router.post('/registerOwner',auth,createOwner)  // Working
 
 //! Bus Routes
-router.post('/createBus',auth,isOwner,createBus)
-router.get('/getBuses',auth,isOwner,getBuses)
-router.get('/getBusById',auth,isOwner, getBus)
+router.post('/createBus',auth,isOwner,createBus) // Working
+router.get('/getBuses',auth,isOwner,getBuses)  // Working
+router.get('/getBus/:id',auth,isOwner, getBus) // Working
 
 //! Essential routes for bus
 router.post('/createSeats/:busId',auth,isOwner,createSeats)
