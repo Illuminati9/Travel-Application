@@ -231,7 +231,7 @@ exports.loginUsingPhoneNumber = async (req, res) => {
             });
         }
 
-        const user = await User.findOne({ phoneNumber });
+        const user = await User.findOne({ phoneNumber },{password:0});
 
         if (!user) {
             return res.status(401).json({
@@ -239,7 +239,6 @@ exports.loginUsingPhoneNumber = async (req, res) => {
                 message: "Invalid Credentials. User is not Registered. Please Sign up.",
             });
         }
-        console.log(user._id +'lksdflksjdflkjsadlkfmnslknmlksdnclksjdkl')
 
         if (user.token) {
             return res.status(401).json({

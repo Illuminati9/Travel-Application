@@ -21,12 +21,6 @@ const busSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    seats: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Seat",
-        }
-    ],
     sourceStop: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Stop",

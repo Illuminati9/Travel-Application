@@ -208,7 +208,7 @@ exports.createBus = async (req, res) => {
 
 exports.getBuses = async (req, res) => {
     try {
-        const buses = await BusModel.find().populate('sourceStop').populate('destinationStop').populate('stops').populate('parkingAddress').populate('busDetails').populate('seats').exec();
+        const buses = await BusModel.find().populate('sourceStop').populate('destinationStop').populate('stops').populate('parkingAddress').populate('busDetails').exec();
 
         if (!buses) {
             return res.status(400).json({
@@ -249,7 +249,7 @@ exports.getBus = async (req, res) => {
             });
         }
 
-        const bus = await BusModel.findById(id).populate('sourceStop').populate('destinationStop').populate('stops').populate('parkingAddress').populate('busDetails').populate('seats');
+        const bus = await BusModel.findById(id).populate('sourceStop').populate('destinationStop').populate('stops').populate('parkingAddress').populate('busDetails').exec();
 
         return res.status(200).json({
             success: true,
@@ -261,233 +261,6 @@ exports.getBus = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "An Error Occurred While Fetching Bus",
-            error: error.message,
-        })
-    }
-}
-
-//? Seats Controllers for Bus
-
-exports.createSeats = async (req, res) => {
-    try {
-        const { seatCapacity, seatArray } = req.body;
-        const { busId } = req.params || req.query;
-        const { id } = req.user;
-        if (!busId || !seatCapacity || !seatArray) {
-            return res.status(400).json({
-                success: false,
-                message: "Please give required details",
-            });
-        }
-
-        if (!mongoose.Types.ObjectId.isValid(busId)) {
-            return res.status(404).json({
-                success: false,
-                message: "Invalid Bus ID",
-            })
-        }
-
-        const user = await UserModel.findById(id);
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: "User Not Found",
-            })
-        }
-
-        if (user.accountType != Owner) {
-            return res.status(400).json({
-                success: false,
-                message: "You are not an owner",
-            })
-        }
-
-
-        const bus = await BusModel.findById(busId);
-        if (!bus) {
-            return res.status(404).json({
-                success: false,
-                message: "Bus Not Found",
-            })
-        }
-
-        if (bus.ownerId.toString() != id) {
-            return res.status(400).json({
-                success: false,
-                message: "You are not the owner of the bus",
-            })
-        }
-
-        const seatsArray = [];
-        for (var seat in seatArray) {
-            const { number, seatPlace, seatType } = seat;
-            if (!number || !seatPlace || !seatType) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Please give required seat details",
-                });
-            }
-            const seatInstance = await SeatModel.create(
-                {
-                    number: number,
-                    seatPlace: seatPlace,
-                    seatType: seatType,
-                    busId
-                }
-            )
-
-            seatsArray.push(seatInstance);
-        }
-
-        bus.seats = seatsArray;
-        bus.seatCapacity = seatCapacity;
-        await bus.save();
-
-        return res.status(201).json({
-            success: true,
-            message: "Seats Created Successfully",
-            seats: seatsArray,
-        });
-    } catch (error) {
-        console.log(error)
-        return res.status(500).json({
-            success: false,
-            message: "An Error Occurred While Creating Seats",
-            error: error.message,
-        })
-    }
-}
-
-exports.getSeats = async (req, res) => {
-    try {
-        const { busId } = req.params || req.query;
-        if (!busId) {
-            return res.status(400).json({
-                success: false,
-                message: "Please give required details",
-            });
-        }
-
-        if (!mongoose.Types.ObjectId.isValid(busId)) {
-            return res.status(404).json({
-                success: false,
-                message: "Invalid Bus ID",
-            })
-        }
-
-        const bus = await BusModel.findById(busId).populate('seats').exec();
-        if (!bus) {
-            return res.status(404).json({
-                success: false,
-                message: "Bus Not Found",
-            })
-        }
-
-        return res.status(200).json({
-            success: true,
-            message: "Seats Fetched Successfully",
-            bus,
-            seats: bus.seats,
-        });
-    } catch (error) {
-        console.log(error)
-        return res.status(500).json({
-            success: false,
-            message: "An Error Occurred While Fetching Seats",
-            error: error.message,
-        })
-    }
-}
-
-
-exports.editSeats = async (req, res) => {
-    try {
-        const { seatCapacity, seatArray } = req.body;
-        const { busId } = req.params || req.query;
-        const { id } = req.user;
-        if (!busId || !seatCapacity || !seatArray) {
-            return res.status(400).json({
-                success: false,
-                message: "Please give required details",
-            });
-        }
-
-        if (!mongoose.Types.ObjectId.isValid(busId)) {
-            return res.status(404).json({
-                success: false,
-                message: "Invalid Bus ID",
-            })
-        }
-
-        const user = await UserModel.findById(id);
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: "User Not Found",
-            })
-        }
-
-        if (user.accountType != Owner) {
-            return res.status(400).json({
-                success: false,
-                message: "You are not an owner",
-            })
-        }
-
-        const bus = await BusModel.findById(busId);
-        if (!bus) {
-            return res.status(404).json({
-                success: false,
-                message: "Bus Not Found",
-            })
-        }
-
-        if (bus.ownerId.toString() != id) {
-            return res.status(400).json({
-                success: false,
-                message: "You are not the owner of the bus",
-            })
-        }
-
-        for (var seatId in bus.seats) {
-            await SeatModel.deleteOne({ _id: seatId });
-        }
-
-        const seatsArray = [];
-        for (var seat in seatArray) {
-            const { number, seatPlace, seatType } = seat;
-            if (!number || !seatPlace || !seatType) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Please give required seat details",
-                });
-            }
-            const seatInstance = await SeatModel.create(
-                {
-                    number: number,
-                    seatPlace: seatPlace,
-                    seatType: seatType,
-                    busId
-                }
-            )
-
-            seatsArray.push(seatInstance);
-        }
-
-        bus.seats = seatsArray;
-        bus.seatCapacity = seatCapacity;
-        await bus.save();
-
-        return res.status(200).json({
-            success: true,
-            message: "Seats Edited Successfully",
-            seats: seatsArray,
-        });
-    } catch (error) {
-        console.log(error)
-        return res.status(500).json({
-            success: false,
-            message: "An Error Occurred While Editing Seats",
             error: error.message,
         })
     }
@@ -545,9 +318,11 @@ exports.addStops = async (req, res) => {
             })
         }
 
+
         const stopsArray = [];
-        for (var stop in stops) {
-            const stopInstance = await StopModel.findById(stop);
+        for (let i=0;i<stops.length;i++) {
+            let stopId = Object(stops[i]);
+            const stopInstance = await StopModel.findById(stopId);
             if (!stopInstance) {
                 return res.status(404).json({
                     success: false,

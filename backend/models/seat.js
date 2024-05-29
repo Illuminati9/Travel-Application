@@ -19,6 +19,15 @@ const seatSchema = new mongoose.Schema({
         required: true,
         enum: ['Window', 'Aisle'],
     },
+    travelDate:{
+        type: Date,
+        required: true,
+    },
+    travelId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Travel',
+        required: true,
+    },
     seatType: {
         type: String,
         required: true,
