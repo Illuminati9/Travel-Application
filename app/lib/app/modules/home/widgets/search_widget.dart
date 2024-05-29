@@ -17,36 +17,60 @@ class SearchContainerWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
-        border: Border.all(color: primaryBorderColor),
+        border: Border.all(color: kPrimaryBorderColor),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.location_on,
                 size: 40,
-                color: primaryColor,
+                color: kPrimaryColor,
               ),
               Expanded(
                 child: Column(
                   children: [
-                    PlainTextField(
-                      hintText: 'Departure',
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          padding: const EdgeInsets.all(0)),
+                      onPressed: () {
+                        Get.toNamed(AppPages.STOPSELECTOR);
+                      },
+                      child: const PlainTextField(
+                        hintText: 'Departure',
+                      ),
                     ),
-                    PrimaryBorder(),
-                    PlainTextField(
-                      hintText: 'Destination',
+                    const PrimaryBorder(),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          padding: const EdgeInsets.all(0)),
+                      onPressed: () {
+                        Get.toNamed(AppPages.STOPSELECTOR);
+                      },
+                      child: const PlainTextField(
+                        hintText: 'Destination',
+                      ),
                     ),
                   ],
                 ),
               ),
-              Icon(
+              const Icon(
                 CupertinoIcons.arrow_up_arrow_down,
                 size: 30,
-                color: primaryColor,
+                color: kPrimaryColor,
               ),
             ],
           ),
@@ -58,11 +82,29 @@ class SearchContainerWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 5),
             alignment: Alignment.center,
             height: Get.height / 12,
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              itemBuilder: (context, index) => DateWidget(date: DateTime.now()),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 4,
+                  itemBuilder: (context, index) =>
+                      DateWidget(date: DateTime.now()),
+                ),
+                const VerticalDivider(color: kPrimaryBorderColor),
+                IconButton(
+                    onPressed: () {
+                      showDatePicker(
+                          context: context,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2100));
+                    },
+                    icon: const Icon(
+                      Icons.calendar_month_rounded,
+                      size: 30,
+                    ))
+              ],
             ),
           ),
           PrimaryButton(

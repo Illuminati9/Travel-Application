@@ -10,8 +10,8 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: primaryColor,
-        foregroundColor: whiteColor,
+        backgroundColor: kPrimaryColor,
+        foregroundColor: kWhiteColor,
         title: const Text(appName),
         centerTitle: true,
       ),
