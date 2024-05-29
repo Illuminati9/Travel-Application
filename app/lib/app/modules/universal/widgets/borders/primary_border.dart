@@ -9,7 +9,7 @@ class PrimaryBorder extends StatelessWidget {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Divider(
-        color: primaryBorderColor,
+        color: kPrimaryBorderColor,
       ),
     );
   }

@@ -9,7 +9,7 @@ class PrimarySideHeadingWidget extends StatelessWidget {
     return Text(
       data,
       style: const TextStyle(
-        color: primaryBorderColor,
+        color: kPrimaryBorderColor,
         fontSize: 13,
       ),
     );

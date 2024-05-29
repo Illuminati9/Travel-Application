@@ -17,7 +17,9 @@ dependencies:
   url_launcher: ^6.2.6
   intl: ^0.19.0
   flutter_html: ^2.2.1
-  flutter_screenutil: ^5.9.0
+  flutter_screenutil: ^5.9.1
+  lottie: ^3.1.2
+  seatsio: ^0.3.4
 
 dev_dependencies:
   flutter_test:
@@ -30,6 +32,22 @@ flutter:
 
   assets:
     - assets/
+
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat/Montserrat-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Montserrat/Montserrat-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Montserrat/Montserrat-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Montserrat/Montserrat-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Montserrat/Montserrat-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Montserrat/Montserrat-Italic.ttf
+          style: italic
   # fonts:
   #   - family: Schyler
   #     fonts:
