@@ -3,7 +3,8 @@ const router = express.Router()
 
 const {createOwner} = require('../controllers/owner')
 const {auth,isUser,isStaff,isOwner} = require('../middlewares/middleware')
-const { createBus, getBuses, getBus, createSeats, addStops, getStops, editStops, getSeats, editSeats } = require('../controllers/bus')
+const { createBus, getBuses, getBus, addStops, getStops, editStops } = require('../controllers/bus')
+const {createSeats, getSeats, editSeats} = require('../controllers/seat')
 
 router.post('/registerOwner',auth,createOwner)  // Working
 

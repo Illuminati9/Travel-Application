@@ -186,7 +186,7 @@ exports.login = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ email }, { password: 0 })
+    const user = await User.findOne({ email }, { password: 0,_id:0 })
       .populate("additionalDetails")
       .exec();
 
