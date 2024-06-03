@@ -16,6 +16,7 @@ import UserPageId from './components/shared/UserID-page.tsx';
 import BusRoutes from './components/shared/bus-routes.tsx';
 import OwnersPage from './components/shared/owners-page.tsx';
 import OwnerIdPage from './components/shared/ownerid-page.tsx';
+import BusPage from './components/shared/bus/busId-page.tsx';
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
   {
     path: '/admin/bus/routes/',
     element: <PrivateRoute component={BusRoutes} />,
+  },
+  {
+    path: '/admin/bus/routes/:id',
+    element: <PrivateRoute component={BusPage} />,
   },
 ]);
 
