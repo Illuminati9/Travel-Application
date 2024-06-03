@@ -11,7 +11,7 @@ const StopName = ({ id }: { id: string }) => {
     const getStopName = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5001/api/v1/admin/stop/${id}`,
+          `${import.meta.env.VITE_BASE_URL}/api/v1/admin/stop/${id}`,
           {
             headers: {
               Authorization: `Bearer ${Cookies.get('Travel_application_access')}`,
