@@ -10,6 +10,8 @@ import {
 } from '@/components/ui/table';
 import Loading from './Loading';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 type User = {
   accountType: string;
@@ -37,8 +39,15 @@ const OwnersPage = () => {
     const controller = new AbortController();
     const getOwner = async () => {
       try {
-        const response = await axiosPrivate.get(`/api/v1/admin/owner/`);
-        console.log('User details in the UserPage', response.data.users);
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/api/v1/admin/owners/`,
+          {
+            headers: {
+              Authorization: `Bearer ${Cookies.get('Travel_application_access')}`,
+            },
+          },
+        );
+        console.log('User details in the owner page', response.data);
         isMounted && setUsers(response.data.users);
       } catch (err) {
         console.error('This is the error', err);

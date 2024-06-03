@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import useAxiosPrivate from '@/hooks/useAxiosPrivate';
-import { Input } from '../ui/input';
-import Loading from './Loading';
 import { useLocation } from 'react-router-dom';
+import Loading from './Loading';
 
-type user = {
+type User = {
   _id: string;
   firstName: string;
   lastName: string;
+  email: string;
   phoneNumber: string;
   accountType: string;
   booking: unknown[];
@@ -28,10 +28,11 @@ type user = {
 };
 
 const UserIdPage = () => {
-  const [user, setUser] = useState<user>();
+  const [user, setUser] = useState<User | null>();
   const [loading, setLoading] = useState(true);
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
+
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
@@ -49,6 +50,7 @@ const UserIdPage = () => {
         isMounted && setLoading(false);
       }
     };
+
     getUser();
 
     return () => {
@@ -62,33 +64,78 @@ const UserIdPage = () => {
   }
 
   return (
-    <section className="flex items-center justify-center h-full">
-      <div className="m-1 shadow-md w-full lg:max-w-lg lg:p-2 sm:p-8 bg-white rounded-lg ">
-        <div className="flex flex-col gap-x-3">
-          <div className="flex items-center justify-center w-full h-full">
-            <img
-              src={user?.image}
-              alt="user"
-              className=" md:h-1/4 md:w-1/4 rounded-full"
-            />
+    <div className="w-full max-w-4xl mx-auto px-4 md:px-6 py-8 md:py-12">
+      <div className="grid md:grid-cols-2 gap-8">
+        <div className="bg-white rounded-lg shadow-md dark:bg-gray-950 dark:text-gray-50">
+          <div className="flex items-center gap-4 p-4 md:p-6 border-b border-gray-200 dark:border-gray-800">
+            <div className="w-12 h-12 md:w-16 md:h-16">
+              <img
+                src={user?.image}
+                alt={`${user?.firstName} ${user?.lastName}`}
+                className="w-full h-full object-cover rounded-full"
+              />
+            </div>
+            <div className="grid gap-1">
+              <h2 className="text-xl font-semibold capitalize">
+                {user?.firstName} {user?.lastName}
+              </h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                @ {user?.email}
+              </p>
+              <p>
+                <span className="text-sm font-semibold ">
+                  Account Type:{' '}
+                  <span className="uppercase">{user?.accountType}</span>
+                </span>
+              </p>
+            </div>
           </div>
-          <div className="flex flex-col gap-y-2 p-2">
-            <div>
-              <span className="m-1">First name :</span>
-              <Input value={user?.firstName} readOnly />
+          <div className="p-4 md:p-6 grid grid-cols-2 gap-4">
+            <div className="grid gap-1">
+              <h3 className="text-base font-semibold">Phone Number</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {user?.phoneNumber}
+              </p>
             </div>
-            <div>
-              <span className="m-1">Last name :</span>
-              <Input value={user?.lastName} readOnly />
+            <div className="grid gap-1">
+              <h3 className="text-base font-semibold">Date Of birth</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {user?.additionalDetails.dateOfBirth || 'Not provided'}
+              </p>
             </div>
-            <div>
-              <span className="m-1">Phone number :</span>
-              <Input value={user?.phoneNumber} readOnly />
+            <div className="grid gap-1">
+              <h3 className="text-base font-semibold">Contact number</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {user?.additionalDetails.contactNumber || 'Not provided'}
+              </p>
+            </div>
+            <div className="grid gap-1">
+              <h3 className="text-base font-semibold">Gender</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {user?.additionalDetails.gender || 'Not provided'}
+              </p>
+            </div>
+          </div>
+          <div className="p-4 md:p-6 border-t border-gray-200 dark:border-gray-800">
+            <h3 className="text-lg font-semibold mb-4">Bookings</h3>
+            <div className="max-h-40 overflow-y-auto">
+              {user?.booking.map((booking, index) => (
+                <div key={index} className="mb-2"></div>
+              ))}
             </div>
           </div>
         </div>
+        <div className="bg-white rounded-lg shadow-md dark:bg-gray-950 dark:text-gray-50 flex items-center justify-center">
+          <img
+            src={user?.image}
+            alt="Profile Picture"
+            width={400}
+            height={400}
+            className="max-w-full h-auto object-cover rounded-lg"
+          />
+        </div>
       </div>
-    </section>
+    </div>
   );
 };
 

@@ -147,7 +147,7 @@ const LoginForm = () => {
                   />
                 </svg>
               )}
-              Send otp
+              Verify
             </Button>
           </form>
         </Form>
