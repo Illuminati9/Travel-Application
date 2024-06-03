@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { Bus, Owner } from './types.ts';
+import Loading from '../Loading.tsx';
 
 const BusPage = () => {
   const location = useLocation();
@@ -18,7 +19,7 @@ const BusPage = () => {
     const getBus = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5001/api/v1/admin/bus/${location.pathname.split('/')[4]}`,
+          `${import.meta.env.VITE_BASE_URL}/api/v1/admin/bus/${location.pathname.split('/')[4]}`,
           {
             signal: controller.signal,
             headers: {
@@ -48,9 +49,11 @@ const BusPage = () => {
     };
   }, [location.pathname]);
 
-  if (loading) return <div>Loading...</div>;
-  if (!bus || !owner) return <div>No data available</div>;
-
+  if (loading) return <Loading width={150} height={150} className="text-2xl" />;
+  if (!bus || !owner) {
+    return <Loading width={150} height={150} className="text-2xl" />;
+  }
+  
   return (
     <section>
       <div className="p-2 bg-gray-100 ">
