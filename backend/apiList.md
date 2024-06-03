@@ -21,11 +21,16 @@
 ### Admin
 
 - #### Stop
-    - [ ] /admin/createStop
-    - [ ] /admin/deleteStop/:id
-    - [ ] /admin/editStop
-    - [ ] /admin/getStop/:id
-    - [ ] /admin/getStops
+    - Get
+        - /admin/stops
+        - /admin/stop - By Name using query
+        - /admin/stop/:id
+    - Post
+        - /admin/stop - Create Stop
+    - Edit 
+        - /admin/stop/:id
+    - Delete
+        - /admin/stop/:id
 
 - #### Ticket
     - /admin/getTicket
