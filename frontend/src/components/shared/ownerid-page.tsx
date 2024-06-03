@@ -118,11 +118,13 @@ const UserIdPage = () => {
           </div>
           <div className="p-4 md:p-6 border-t border-gray-200 dark:border-gray-800">
             <h3 className="text-lg font-semibold mb-4">Bookings</h3>
-            <div className="max-h-40 overflow-y-auto">
-              {user?.booking.map((booking, index) => (
-                <div key={index} className="mb-2"></div>
+            {/* <div className="max-h-40 overflow-y-auto">
+              {user?.booking.map((booking,index) => (
+                <div key={index} className="mb-2">
+                 
+                </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="bg-white rounded-lg shadow-md dark:bg-gray-950 dark:text-gray-50 flex items-center justify-center">
