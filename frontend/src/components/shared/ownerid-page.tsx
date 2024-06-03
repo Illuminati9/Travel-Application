@@ -121,7 +121,6 @@ const UserIdPage = () => {
             {/* <div className="max-h-40 overflow-y-auto">
               {user?.booking.map((booking,index) => (
                 <div key={index} className="mb-2">
-                 
                 </div>
               ))}
             </div> */}
