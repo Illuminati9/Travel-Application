@@ -25,15 +25,15 @@ class DialogHelper {
                 style: Get.textTheme.headlineSmall,
               ),
               SizedBox(height: 10.h),
-              Lottie.asset(
-                isSuccess
-                    ? 'animations/success.json'
-                    : 'animations/apiError.json',
-                height: 140.h,
-                repeat: true,
-                reverse: true,
-                fit: BoxFit.cover,
-              ),
+              // Lottie.asset(
+              //   isSuccess
+              //       ? 'animations/success.json'
+              //       : 'animations/apiError.json',
+              //   height: 140.h,
+              //   repeat: true,
+              //   reverse: true,
+              //   fit: BoxFit.cover,
+              // ),
               SizedBox(height: 10.h),
               Text(
                 description,

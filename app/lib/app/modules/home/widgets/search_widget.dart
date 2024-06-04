@@ -1,3 +1,4 @@
+import 'package:app/app/modules/home/controllers/home_controller.dart';
 import 'package:app/app/modules/universal/widgets/borders/primary_border.dart';
 import 'package:app/app/modules/universal/widgets/buttons/primary_button.dart';
 import 'package:app/app/modules/universal/widgets/date/date_widget.dart';
@@ -10,7 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SearchContainerWidget extends StatelessWidget {
-  const SearchContainerWidget({super.key});
+  const SearchContainerWidget({super.key, required this.controller});
+
+  final HomeController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +45,13 @@ class SearchContainerWidget extends StatelessWidget {
                           ),
                           padding: const EdgeInsets.all(0)),
                       onPressed: () {
-                        Get.toNamed(AppPages.STOPSELECTOR);
+                        Get.toNamed(AppPages.STOPSELECTOR,
+                            arguments: 'departure');
                       },
-                      child: const PlainTextField(
-                        hintText: 'Departure',
+                      child: PlainTextField(
+                        hintText: controller.departure.value.city != null
+                            ? controller.departure.value.city.toString()
+                            : 'Departure',
                       ),
                     ),
                     const PrimaryBorder(),
@@ -58,19 +64,27 @@ class SearchContainerWidget extends StatelessWidget {
                           ),
                           padding: const EdgeInsets.all(0)),
                       onPressed: () {
-                        Get.toNamed(AppPages.STOPSELECTOR);
+                        Get.toNamed(AppPages.STOPSELECTOR,
+                            arguments: 'destination');
                       },
-                      child: const PlainTextField(
-                        hintText: 'Destination',
+                      child: PlainTextField(
+                        hintText: controller.destination.value.city != null
+                            ? controller.destination.value.city.toString()
+                            : 'Destination',
                       ),
                     ),
                   ],
                 ),
               ),
-              const Icon(
-                CupertinoIcons.arrow_up_arrow_down,
-                size: 30,
-                color: kPrimaryColor,
+              IconButton(
+                onPressed: () {
+                  controller.swapStops();
+                },
+                icon: const Icon(
+                  CupertinoIcons.arrow_up_arrow_down,
+                  size: 30,
+                  color: kPrimaryColor,
+                ),
               ),
             ],
           ),
@@ -89,16 +103,26 @@ class SearchContainerWidget extends StatelessWidget {
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemCount: 4,
-                  itemBuilder: (context, index) =>
-                      DateWidget(date: DateTime.now()),
+                  itemBuilder: (context, index) => DateWidget(
+                    date: controller.selectedDate.value
+                        .add(Duration(days: index-1)),
+                    isSelected: controller.selectedDate.value ==
+                        controller.selectedDate.value
+                            .add(Duration(days: index-1)),
+                  ),
                 ),
                 const VerticalDivider(color: kPrimaryBorderColor),
                 IconButton(
-                    onPressed: () {
-                      showDatePicker(
+                    onPressed: () async {
+                      final DateTime? date = await showDatePicker(
                           context: context,
                           firstDate: DateTime.now(),
                           lastDate: DateTime(2100));
+
+                      if (date != null &&
+                          date != controller.selectedDate.value) {
+                        controller.setDate(date);
+                      }
                     },
                     icon: const Icon(
                       Icons.calendar_month_rounded,
@@ -110,7 +134,15 @@ class SearchContainerWidget extends StatelessWidget {
           PrimaryButton(
             name: 'Search Buses',
             function: () {
-              Get.toNamed(AppPages.SEARCHRESULT);
+              if(controller.departure.value.city == null || controller.destination.value.city == null){
+                Get.snackbar('Error', 'Please select Departure and Destination');
+                return;
+              }else if(controller.selectedDate.value == null){
+                Get.snackbar('Error', 'Please select Departure Date');
+                return;
+              }else{
+                Get.toNamed(AppPages.SEARCHRESULT,arguments: {'departure':controller.departure.value,'destination':controller.destination.value,'date':controller.selectedDate.value});
+              }
             },
           )
         ],
