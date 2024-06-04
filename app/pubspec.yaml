@@ -9,7 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^1.0.6
   get: ^4.6.6
   http: ^1.2.1
@@ -20,6 +19,7 @@ dependencies:
   flutter_screenutil: ^5.9.1
   lottie: ^3.1.2
   seatsio: ^0.3.4
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -32,6 +32,7 @@ flutter:
 
   assets:
     - assets/
+    - .env
 
   fonts:
     - family: Montserrat

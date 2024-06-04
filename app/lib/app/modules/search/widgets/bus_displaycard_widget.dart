@@ -1,13 +1,16 @@
 import 'package:app/app/models/bus_details.dart';
+import 'package:app/app/models/travel.dart';
 import 'package:app/app/routes/app_pages.dart';
 import 'package:app/utils/colors.dart';
+import 'package:app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class BusDisplayCardWidget extends StatelessWidget {
   const BusDisplayCardWidget({super.key, required this.busDetails});
 
-  final BusDetails busDetails;
+  final Travel busDetails;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,48 +27,33 @@ class BusDisplayCardWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                busDetails.busName,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                busDetails.busId?.name.toString() ?? 'Bus Name',
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-              const Text(
-                '₹7809',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
               Text(
-                busDetails.busName,
-              ),
-              const Text(
-                '₹7809',
-              ),
-            ],
-          ),
-           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                busDetails.busName,
-              ),
-              const Text(
-                '₹7809',
+                '$kRupeeValue ${busDetails.price}',
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
             ],
           ),
+          Text(
+            '${DateFormat('HH:MM a').format(busDetails.departure!)} - ${DateFormat('HH:MM a').format(busDetails.arrival!)}',
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          Text('${busDetails.availableSeats} Seats Available'),
           const Divider(color: kPrimaryBorderColor),
           InkWell(
             onTap: () {
-               Get.toNamed(AppPages.SEATSELECTOR);
+              Get.toNamed(AppPages.SEATSELECTOR);
             },
             child: Container(
               alignment: Alignment.centerRight,
               child: const Text(
                 'Bus Details',
-                style:
-                    TextStyle(color: kPrimaryColor, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    color: kPrimaryColor, fontWeight: FontWeight.w600),
               ),
             ),
           ),
