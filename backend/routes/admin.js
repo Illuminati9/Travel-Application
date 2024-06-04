@@ -26,7 +26,7 @@ const {
 } = require("../controllers/admin");
 
 //! Stop Routes
-router.get("/stops", auth, getStops); // Working
+router.get("/stops", getStops); // Working
 router.get("/stop", auth, getStopByName); //Working
 router.get("/stop/:id", auth, getStopById); //Working
 router.post("/stop", auth, isAdmin, createStop); //Working
