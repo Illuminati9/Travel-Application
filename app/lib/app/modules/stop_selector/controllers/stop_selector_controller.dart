@@ -9,7 +9,7 @@ class StopSelectorController extends GetxController{
   RxList<Stop> stopList = <Stop>[].obs;
   var selectedStop = ''.obs;
   RxBool isLoading = false.obs;
-  var isDataNotAvailable = false.obs;
+  var isDataNotAvailable = true.obs;
 
   @override
   void onInit() async{
@@ -30,9 +30,11 @@ class StopSelectorController extends GetxController{
           for(var stop in response['stops']){
             stopList.add(Stop.fromJson(stop));
           }
+          isDataNotAvailable(false);
         }
       }
     } catch(e){
+      isDataNotAvailable(true);
       print(e);
     }   
   }

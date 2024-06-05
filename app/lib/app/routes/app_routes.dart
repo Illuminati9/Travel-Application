@@ -7,6 +7,7 @@ class Routes{
   static const STOPSELECTOR = _Paths.STOPSELECTOR;
   static const SEATSELECTOR = _Paths.SEATSELECTOR;
   static const BOARDINGPOINTSELECTOR = _Paths.BOARDINGPOINTSELECTOR;
+  static const BOOKING = _Paths.BOOKING;
 }
 
 abstract class _Paths{
@@ -16,4 +17,5 @@ abstract class _Paths{
   static const STOPSELECTOR = '/stop-selector';
   static const SEATSELECTOR = '/seat-selector';
   static const BOARDINGPOINTSELECTOR = '/boarding-point-selector';
+  static const BOOKING = '/booking';
 }

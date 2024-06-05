@@ -1,4 +1,3 @@
-import 'package:app/app/models/bus_details.dart';
 import 'package:app/app/models/travel.dart';
 import 'package:app/app/routes/app_pages.dart';
 import 'package:app/utils/colors.dart';

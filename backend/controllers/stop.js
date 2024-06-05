@@ -98,6 +98,41 @@ exports.getStopByName = async (req, res) => {
     }
 }
 
+exports.getStopByCity= async(req,res)=>{
+    try {
+        const {city} = req.query;
+
+        if(!city) {
+            return res.status(400).json({
+                success: false,
+                message: "Please Provide A City Name"
+            })
+        }
+
+        const stops = await StopModel.find({city});
+
+        if(!stops) {
+            return res.status(404).json({
+                success: true,
+                message: "No Stops Found"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Stops Fetched Successfully",
+            stops
+        });
+    } catch (error) {
+        console.log(error.message)
+        return res.status(500).json({
+            success: false,
+            message: "An Error Occurred While Fetching Stops By City Name",
+            error: error.message
+        })
+    }
+}
+
 exports.createStop = async (req,res)=>{
     try {
         const {stopName, stopAddress, city, pincode} = req.body;
