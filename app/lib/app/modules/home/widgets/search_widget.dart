@@ -105,10 +105,10 @@ class SearchContainerWidget extends StatelessWidget {
                   itemCount: 4,
                   itemBuilder: (context, index) => DateWidget(
                     date: controller.selectedDate.value
-                        .add(Duration(days: index-1)),
+                        .add(Duration(days: index - 1)),
                     isSelected: controller.selectedDate.value ==
                         controller.selectedDate.value
-                            .add(Duration(days: index-1)),
+                            .add(Duration(days: index - 1)),
                   ),
                 ),
                 const VerticalDivider(color: kPrimaryBorderColor),
@@ -134,14 +134,17 @@ class SearchContainerWidget extends StatelessWidget {
           PrimaryButton(
             name: 'Search Buses',
             function: () {
-              if(controller.departure.value.city == null || controller.destination.value.city == null){
-                Get.snackbar('Error', 'Please select Departure and Destination');
+              if (controller.departure.value.city == null ||
+                  controller.destination.value.city == null) {
+                Get.snackbar(
+                    'Error', 'Please select Departure and Destination');
                 return;
-              }else if(controller.selectedDate.value == null){
-                Get.snackbar('Error', 'Please select Departure Date');
-                return;
-              }else{
-                Get.toNamed(AppPages.SEARCHRESULT,arguments: {'departure':controller.departure.value,'destination':controller.destination.value,'date':controller.selectedDate.value});
+              } else {
+                Get.toNamed(AppPages.SEARCHRESULT, arguments: {
+                  'departure': controller.departure.value,
+                  'destination': controller.destination.value,
+                  'date': controller.selectedDate.value
+                });
               }
             },
           )

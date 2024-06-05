@@ -1,3 +1,4 @@
+import 'package:app/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class PlainTextField extends StatelessWidget {
@@ -14,6 +15,11 @@ class PlainTextField extends StatelessWidget {
         border: InputBorder.none,
         contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
         hintText: hintText,
+        hintStyle: const TextStyle(
+          color: kBlackColor,
+          fontWeight: FontWeight.w600,
+          fontSize: 16,
+        ),
       ),
     );
   }

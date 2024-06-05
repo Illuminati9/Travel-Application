@@ -1,3 +1,4 @@
+import 'package:app/app/modules/bookings/views/booking_view.dart';
 import 'package:app/app/modules/home/bindings/home_binding.dart';
 import 'package:app/app/modules/home/views/home_view.dart';
 import 'package:app/app/modules/search/bindings/search_binding.dart';
@@ -18,6 +19,7 @@ class AppPages {
   static const STOPSELECTOR = Routes.STOPSELECTOR;
   static const SEATSELECTOR = Routes.SEATSELECTOR;
   static const BOARDINGPOINTSELECTOR = Routes.BOARDINGPOINTSELECTOR;
+  static const BOOKING = Routes.BOOKING;
 
   static final routes = [
     GetPage(
@@ -25,6 +27,7 @@ class AppPages {
       page: () => const HomeView(),
       binding: HomeBinding(),
     ),
+    GetPage(name: _Paths.BOOKING, page: ()=> const BookingView()),
     GetPage(
       name: _Paths.SEARCHRESULT,
       page: () => const SearchResultView(),

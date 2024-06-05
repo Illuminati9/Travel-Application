@@ -1,0 +1,68 @@
+import 'package:app/utils/dummy_models/booking.dart';
+
+final List<BookingDummy> bookingData = [
+  BookingDummy(
+    bookingId: '1',
+    departure: 'Kathmandu',
+    arrival: 'Pokhara',
+    departureTime: '10:00 AM',
+    arrivalTime: '2:00 PM',
+    date: '2022-12-12',
+  ),
+  BookingDummy(
+    bookingId: '2',
+    departure: 'Kathmandu',
+    arrival: 'Pokhara',
+    departureTime: '10:00 AM',
+    arrivalTime: '2:00 PM',
+    date: '2022-12-12',
+  ),
+  BookingDummy(
+    bookingId: '3',
+    departure: 'Kathmandu',
+    arrival: 'Pokhara',
+    departureTime: '10:00 AM',
+    arrivalTime: '2:00 PM',
+    date: '2022-12-12',
+  ),
+  BookingDummy(
+    bookingId: '4',
+    departure: 'Kathmandu',
+    arrival: 'Pokhara',
+    departureTime: '10:00 AM',
+    arrivalTime: '2:00 PM',
+    date: '2022-12-12',
+  ),
+  BookingDummy(
+    bookingId: '5',
+    departure: 'Kathmandu',
+    arrival: 'Pokhara',
+    departureTime: '10:00 AM',
+    arrivalTime: '2:00 PM',
+    date: '2022-12-12',
+  ),
+  BookingDummy(
+    bookingId: '6',
+    departure: 'Kathmandu',
+    arrival: 'Pokhara',
+    departureTime: '10:00 AM',
+    arrivalTime: '2:00 PM',
+    date: '2022-12-12',
+  ),
+  BookingDummy(
+    bookingId: '7',
+    departure: 'Kathmandu',
+    arrival: 'Pokhara',
+    departureTime: '10:00 AM',
+    arrivalTime: '2:00 PM',
+    date: '2022-12-12',
+  ),
+  BookingDummy(
+    bookingId: '8',
+    departure: 'Kathmandu',
+    arrival: 'Pokhara',
+    departureTime: '10:00 AM',
+    arrivalTime: '2:00 PM',
+    date: '2022-12-12',
+  ),
+];
