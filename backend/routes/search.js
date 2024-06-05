@@ -8,6 +8,7 @@ const {
   deleteStop,
   getStopById,
   getStopByName,
+  getStopByCity
 } = require("../controllers/stop");
 const { getTravelBuses, createTravel } = require("../controllers/travel");
 const {
@@ -25,6 +26,7 @@ router.post("/createTravel", auth, isOwner, createTravel); //Working
 //! Stop Routes
 router.get("/stops", auth, getStops); // Working
 router.get("/stop", auth, getStopByName); //Working
+router.get('/stopByCity',auth,getStopByCity)
 router.get("/stop/:id", auth, getStopById); //Working
 router.post("/stop", auth, isAdmin, createStop); //Working
 router.put("/stop/:id", auth, isAdmin, updateStop); //Working
