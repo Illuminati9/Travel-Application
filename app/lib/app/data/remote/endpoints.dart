@@ -7,7 +7,9 @@ class Endpoints{
 
   //! Admin
   static const String searchStopsApi = "$apiV1/admin/stops";
+  
   //! Search
+  static const String searchCityApi = "$apiV1/search/stopByCity";
   static const String searchApi = "$apiV1/search/searchTravel";
   static const String searchStopsApiGet = "$apiV1/search/stops";
 }

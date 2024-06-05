@@ -118,4 +118,10 @@ class ApiService extends ApiInterface {
     print('Search Stops Response: $res');
     return res;
   }
+
+  Future<http.Response> getCityDetails(String city)async{
+    http.Response res = await getApi(url: '${ApiInterface.baseUrl}${Endpoints.searchCityApi}?city=$city');
+    print('Search Stops Response: $res');
+    return res;
+  }
 }

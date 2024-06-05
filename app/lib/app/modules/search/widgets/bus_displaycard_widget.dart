@@ -45,7 +45,7 @@ class BusDisplayCardWidget extends StatelessWidget {
           const Divider(color: kPrimaryBorderColor),
           InkWell(
             onTap: () {
-              Get.toNamed(AppPages.SEATSELECTOR);
+              Get.toNamed(AppPages.SEATSELECTOR,arguments: busDetails);
             },
             child: Container(
               alignment: Alignment.centerRight,
